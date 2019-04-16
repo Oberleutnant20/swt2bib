@@ -1,7 +1,7 @@
 /**
- * Author:  Thomas Jäger
- * Created: 17.04.2018
- * Last Change: 12.05.2018
+ * Author:  Tim Lorse
+ * Created: 16.04.2019
+ * Last Change: 16.04.2019
  */
 
 -- Löscht das Datenbankschema(Database), wenn es existiert
