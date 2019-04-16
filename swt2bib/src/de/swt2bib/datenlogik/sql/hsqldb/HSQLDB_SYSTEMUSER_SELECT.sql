@@ -1,0 +1,5 @@
+/**
+ * Author:  Tim
+ * Created: 24.02.2018
+ */
+SELECT * FROM INFORMATION_SCHEMA.SYSTEM_USERS;
