@@ -1,0 +1,40 @@
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
+/**
+ *
+ * @author root
+ */
+public class generatePasswordHash {
+    private String username = null;
+    private String pw = null;
+
+    
+    // Setzen von username und pw
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPw(String pw) {
+        this.pw = pw;
+    }
+    
+    public String getUsername(){
+        return username;
+    }
+    
+    public String getPw(){
+        return pw;
+    }
+    
+    // Hash generieren
+    public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        generatePasswordHash generate = new generatePasswordHash();
+        
+        generate.setUsername("Admin");
+        generate.setPw("!Administrator@swt2bib");
+        
+        System.out.println("Gewähltes Passwort für "+generate.getUsername()+": ");
+        System.out.println(new Password().getSHA512(generate.getPw()));
+    }
+}
