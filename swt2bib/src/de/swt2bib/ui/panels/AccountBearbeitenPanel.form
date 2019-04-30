@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="2"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="sucheField" min="-2" pref="70" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="mitarbeiterCheckBox" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="saveButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="40" max="32767" attributes="0"/>
+                              <Component id="meldungText" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="checkPasswortLable" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="checkPasswortField" min="-2" pref="70" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="plzLable" min="-2" max="-2" attributes="0"/>
+                                  <Component id="strasseLable" min="-2" max="-2" attributes="0"/>
+                                  <Component id="vornameLable" min="-2" max="-2" attributes="0"/>
+                                  <Component id="passwortLable" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="vornameField" alignment="0" pref="70" max="32767" attributes="0"/>
+                                  <Component id="strasseField" alignment="0" pref="70" max="32767" attributes="0"/>
+                                  <Component id="plzField" alignment="0" pref="70" max="32767" attributes="0"/>
+                                  <Component id="passwortField" pref="70" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="hausnummerLable" min="-2" max="-2" attributes="0"/>
+                                  <Component id="nameLable" min="-2" max="-2" attributes="0"/>
+                                  <Component id="stadtLable" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="nameField" alignment="1" min="-2" pref="70" max="-2" attributes="0"/>
+                                  <Component id="stadtField" alignment="1" min="-2" pref="70" max="-2" attributes="0"/>
+                                  <Component id="hausnummerField" alignment="1" min="-2" pref="70" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="sucheField" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="vornameField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="vornameLable" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nameLable" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nameField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="strasseField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="strasseLable" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="hausnummerLable" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="hausnummerField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="plzField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="plzLable" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="stadtLable" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="stadtField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="passwortField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="passwortLable" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="checkPasswortLable" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="checkPasswortField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+              <Component id="mitarbeiterCheckBox" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="meldungText" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="27" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="vornameLable">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Vorname:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="nameLable">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Name:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="strasseLable">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Stra&#xdf;e:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="hausnummerLable">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Hausnummer:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="plzLable">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="PLZ:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="stadtLable">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Stadt:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="saveButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Speichern"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="passwortLable">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Passwort:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="checkPasswortLable">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Passwort best&#xe4;tigen:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="mitarbeiterCheckBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mitarbeiter"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="vornameField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jTextField1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="nameField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jTextField2"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="hausnummerField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jTextField3"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="stadtField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jTextField4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="checkPasswortField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="best&#xe4;tigen"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="passwortField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Passwort"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="plzField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jTextField7"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="strasseField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jTextField8"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="sucheField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Titelsuche..."/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sucheFieldActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="meldungText">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Hier k&#xf6;nnen die Accountinformationen bearbeitet werden"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>
