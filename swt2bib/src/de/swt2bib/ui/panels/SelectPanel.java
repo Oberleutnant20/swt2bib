@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.swt2bib.ui.panels;
 
 import de.swt2bib.fachlogik.genreverwaltung.Genre;
@@ -171,7 +166,8 @@ public class SelectPanel extends ElternPanel {
         for (int i = 0; i < list.size(); i++) {
             tmp[i] = list.get(i).getBezeichnung();
         }
-        combobox.setModel(new DefaultComboBoxModel(tmp));
+        combobox = new JComboBox(tmp);
+        //combobox.setModel(new DefaultComboBoxModel(tmp));
     }
 
     private void setComboboxGenre(JComboBox combobox, List<Genre> list) {
@@ -179,7 +175,8 @@ public class SelectPanel extends ElternPanel {
         for (int i = 0; i < list.size(); i++) {
             tmp[i] = list.get(i).getBezeichnung();
         }
-        combobox.setModel(new DefaultComboBoxModel(tmp));
+        combobox = new JComboBox(tmp);
+        //combobox.setModel(new DefaultComboBoxModel(tmp));
     }
 
     private void setComboboxDate(JComboBox combobox) {
@@ -193,7 +190,8 @@ public class SelectPanel extends ElternPanel {
             String date = formatter.format(list.get(i));
             tmp[i] = date;
         }
-        combobox.setModel(new DefaultComboBoxModel(tmp));
+        combobox = new JComboBox(tmp);
+        //combobox.setModel(new DefaultComboBoxModel(tmp));
     }
 
     private static Date addDays(int days) {

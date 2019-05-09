@@ -1,4 +1,3 @@
-
 package de.swt2bib.ui.panels;
 
 import de.swt2bib.fachlogik.accountverwaltung.Account;
