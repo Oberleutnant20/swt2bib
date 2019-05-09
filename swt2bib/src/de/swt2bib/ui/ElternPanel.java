@@ -4,13 +4,11 @@ package de.swt2bib.ui;
  *
  * @author root
  */
-public class ElternPanel extends javax.swing.JFrame {
+public class ElternPanel extends javax.swing.JPanel {
 
-    public final PanelHandler panelHandler;
-    /**
-     * Creates new form ElternPanel
-     */
-    public ElternPanel(PanelHandler panelHandler) {
+    public PanelHandler panelHandler;
+    
+    public ElternPanel(final PanelHandler panelHandler) {
         this.panelHandler = panelHandler;
     }
 
@@ -23,10 +21,8 @@ public class ElternPanel extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 400, Short.MAX_VALUE)
@@ -35,8 +31,6 @@ public class ElternPanel extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
 

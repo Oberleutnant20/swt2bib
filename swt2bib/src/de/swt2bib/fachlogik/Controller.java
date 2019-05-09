@@ -185,7 +185,6 @@ public class Controller {
                 //historyListe.add(history);
                 ausleiheverwaltung.delete(liste.get(i));
             }
-            System.out.println("Controller ausleihe Pruefen");
         }
     }
 

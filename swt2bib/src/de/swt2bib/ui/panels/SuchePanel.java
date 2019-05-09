@@ -38,26 +38,98 @@ public class SuchePanel extends ElternPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        sucheField = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        kategorieLable = new javax.swing.JLabel();
+        genreLable = new javax.swing.JLabel();
+        kategorieComboBox = new javax.swing.JComboBox<>();
+        genreComboBox = new javax.swing.JComboBox<>();
+        selectButton = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        sucheField.setText("Suche");
+        sucheField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sucheFieldActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Kategorie", "Genre", "ISBN", "Verfügbar"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        kategorieLable.setText("Katgorie");
+
+        genreLable.setText("Genre");
+
+        kategorieComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        kategorieComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kategorieComboBoxActionPerformed(evt);
+            }
+        });
+
+        genreComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        genreComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                genreComboBoxActionPerformed(evt);
+            }
+        });
+
+        selectButton.setText("Auswählen");
+        selectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(kategorieLable)
+                .addGap(26, 26, 26)
+                .addComponent(kategorieComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addComponent(genreLable)
+                .addGap(18, 18, 18)
+                .addComponent(genreComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(selectButton))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(sucheField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(sucheField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(kategorieLable)
+                    .addComponent(genreLable)
+                    .addComponent(kategorieComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(genreComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectButton))
+                .addGap(26, 26, 26))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void selectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtonActionPerformed
-        try {
+      try {
             panelHandler.getSelectPanel().setMedium(getMediumfromIndices(getListSelections()));
-            if (panelHandler.getAktuellerUser().isMitarbeiter()) {
+            if(panelHandler.getAktuellerUser().isMitarbeiter()){
                 panelHandler.getSelectPanel().setMitarbeiter();
             }
             panelHandler.panelUnsichtbar();
@@ -66,7 +138,7 @@ public class SuchePanel extends ElternPanel {
         } catch (Exception e) {
             System.err.println("problem beim aufrufen vom selectpanel");
         }
-
+        
     }//GEN-LAST:event_selectButtonActionPerformed
 
     private void sucheFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucheFieldActionPerformed
@@ -74,44 +146,40 @@ public class SuchePanel extends ElternPanel {
     }//GEN-LAST:event_sucheFieldActionPerformed
 
     private void kategorieComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kategorieComboBoxActionPerformed
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
         String text = kategorieComboBox.getItemAt(0);
         for (int i = model.getRowCount() - 1; i > -1; i--) {
             model.removeRow(i);
         }
-
+        
         int kategorieid = -1;
         for (int i = 0; i < panelHandler.getKategorieListe().size(); i++) {
-            if (panelHandler.getKategorieListe().get(i).getBezeichnung().equals(text)) {
-                kategorieid = (int) panelHandler.getKategorieListe().get(i).getId();
-            }
+         if(panelHandler.getKategorieListe().get(i).getBezeichnung().equals(text))   
+             kategorieid=(int) panelHandler.getKategorieListe().get(i).getId();
         }
-
+        
         for (int i = 0; i < medienListe.size(); i++) {
-            if (medienListe.get(i).getKategorien().getId() == kategorieid) {
-                model.addRow(addObject(i));
-            }
+            if(medienListe.get(i).getKategorien().getId()==kategorieid)
+             model.addRow(addObject(i));    
         }
     }//GEN-LAST:event_kategorieComboBoxActionPerformed
 
     private void genreComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genreComboBoxActionPerformed
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        String text = genreComboBox.getItemAt(0);
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        String text =genreComboBox.getItemAt(0);
         for (int i = model.getRowCount() - 1; i > -1; i--) {
             model.removeRow(i);
         }
-
+        
         int genreid = -1;
         for (int i = 0; i < panelHandler.getKategorieListe().size(); i++) {
-            if (panelHandler.getGenreListe().get(i).getBezeichnung().equals(text)) {
-                genreid = (int) panelHandler.getGenreListe().get(i).getId();
-            }
+         if(panelHandler.getGenreListe().get(i).getBezeichnung().equals(text))   
+             genreid=(int) panelHandler.getGenreListe().get(i).getId();
         }
-
+        
         for (int i = 0; i < medienListe.size(); i++) {
-            if (medienListe.get(i).getGenre().getId() == genreid) {
-                model.addRow(addObject(i));
-            }
+            if(medienListe.get(i).getGenre().getId()==genreid)
+             model.addRow(addObject(i));    
         }
     }//GEN-LAST:event_genreComboBoxActionPerformed
 
@@ -129,72 +197,69 @@ public class SuchePanel extends ElternPanel {
 
     void setSearchTitel(String text) {
         medienListe = panelHandler.returnMedien();
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        
         for (int i = model.getRowCount() - 1; i > -1; i--) {
             model.removeRow(i);
         }
-
-        if (text.equals("") || text.equals("Suche") || text.equals("Titelsuchen...") || text.equals("Titelsuche...")) {
+        
+        if(text.equals("")||text.equals("Suche")||text.equals("Titelsuchen...")||text.equals("Titelsuche...")){
             for (int i = 0; i < medienListe.size(); i++) {
-                model.addRow(addObject(i));
+                model.addRow(addObject(i)); 
             }
             return;
         }
-
+        
         for (int i = 0; i < medienListe.size(); i++) {
-            if (medienListe.get(i).getName().equals(text)) {
-                model.addRow(addObject(i));
-            }
+            if(medienListe.get(i).getName().equals(text))
+             model.addRow(addObject(i));    
         }
     }
-
-    public void setMedienListe(ArrayList<Medien> medien) {
+    
+    public void setMedienListe(ArrayList<Medien> medien){
         medienListe = medien;
     }
-
-    public void fillTable() {
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    
+    public void fillTable(){
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
         for (int i = 0; i < medienListe.size(); i++) {
-            model.addRow(addObject(i));
+          model.addRow(addObject(i));  
         }
     }
-
+    
     private Medien getMediumfromIndices(int position) {
-        Medien selected = null;
-        selected = medienListe.get(position);
-        return selected;
-    }
-
+		Medien selected = null;
+		selected = medienListe.get(position);
+		return selected;
+	}
+    
     private int getListSelections() {
-        int[] selected = jTable1.getSelectedRows();
-        for (int i = 0; i < selected.length; i++) {
-            selected[i] = jTable1.convertRowIndexToModel(selected[i]);
-        }
-        return selected[0];
+	int[] selected = jTable1.getSelectedRows();
+	for (int i = 0; i < selected.length; i++) {
+		selected[i] = jTable1.convertRowIndexToModel(selected[i]);
+	}
+	return selected[0];
     }
-
-    private void setComboboxKategorie(JComboBox combobox, List<Kategorie> list) {
+    
+    private void setComboboxKategorie(JComboBox combobox,List<Kategorie> list){
         String[] tmp = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
             tmp[i] = list.get(i).getBezeichnung();
-        }
-        combobox = new JComboBox(tmp);
-        //combobox.setModel(new DefaultComboBoxModel(tmp));
+        }        
+        combobox.setModel(new DefaultComboBoxModel(tmp));
     }
-
-    private void setComboboxGenre(JComboBox combobox, List<Genre> list) {
+    
+    private void setComboboxGenre(JComboBox combobox,List<Genre> list){
         String[] tmp = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
             tmp[i] = list.get(i).getBezeichnung();
-        }
-        combobox = new JComboBox(tmp);
-        //combobox.setModel(new DefaultComboBoxModel(tmp));
+        }        
+        combobox.setModel(new DefaultComboBoxModel(tmp));
     }
 
     private Object[] addObject(int i) {
         String kategorie = medienListe.get(i).getKategorien().getBezeichnung();
         String genre = medienListe.get(i).getGenre().getBezeichnung();
-        return new Object[]{medienListe.get(i).getName(), kategorie, genre, medienListe.get(i).getIsbn(), medienListe.get(i).getVerfuegbare()};
+        return new Object[]{medienListe.get(i).getName(),kategorie,genre,medienListe.get(i).getIsbn(),medienListe.get(i).getVerfuegbare()};
     }
 }
