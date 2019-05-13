@@ -148,7 +148,7 @@ public class PanelHandler {
     }
 
     public void saveAccountChange(int id, String hausnummer, String name, int plz, String ort, String strasse, String vorname, String passwort, boolean mitarbeiter, String accountname) {
-        Account a = new Account(accountname,passwort, mitarbeiter, id, vorname, name, plz, strasse, hausnummer, ort);
+        Account a = new Account(accountname, controller.generatePwHash(passwort), mitarbeiter, id, vorname, name, plz, strasse, hausnummer, ort);
         controller.saveAccountChange(a);
     }
 
@@ -161,7 +161,7 @@ public class PanelHandler {
     }
 
     public void saveAccount(int id, String hausnummer, String name, int plz, String ort, String strasse, String vorname, String passwort, boolean mitarbeiter, String accountname) {
-        controller.saveAccount(new Account(accountname,passwort, mitarbeiter, id, vorname, name, plz, strasse, hausnummer, ort));
+        controller.saveAccount(new Account(accountname, controller.generatePwHash(passwort), mitarbeiter, id, vorname, name, plz, strasse, hausnummer, ort));
     }
 
     void loadUserAusleihe() {

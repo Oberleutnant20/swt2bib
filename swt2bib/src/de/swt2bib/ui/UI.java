@@ -40,17 +40,156 @@ public class UI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel1 = new javax.swing.JPanel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        accountMenu = new javax.swing.JMenu();
+        LoginLogoutMenu = new javax.swing.JMenuItem();
+        editAccountMenu = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        historyMenu = new javax.swing.JMenuItem();
+        aktuelleAusleiheMenu = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        beendenMenu = new javax.swing.JMenuItem();
+        helpMenu = new javax.swing.JMenu();
+        informationMenu = new javax.swing.JMenuItem();
+        supportMenu = new javax.swing.JMenuItem();
+        startMenu = new javax.swing.JMenuItem();
+        optionMenu = new javax.swing.JMenuItem();
+        administrationMenu = new javax.swing.JMenu();
+        accountsBearbeitenItem = new javax.swing.JMenuItem();
+        ausleihenBearbeiten = new javax.swing.JMenuItem();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 506, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 298, Short.MAX_VALUE)
+        );
+
+        accountMenu.setText("Account");
+
+        LoginLogoutMenu.setText("Login/Logout");
+        LoginLogoutMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoginLogoutMenuActionPerformed(evt);
+            }
+        });
+        accountMenu.add(LoginLogoutMenu);
+
+        editAccountMenu.setText("Account bearbeiten");
+        editAccountMenu.setEnabled(false);
+        editAccountMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editAccountMenuActionPerformed(evt);
+            }
+        });
+        accountMenu.add(editAccountMenu);
+        accountMenu.add(jSeparator2);
+
+        historyMenu.setText("History");
+        historyMenu.setEnabled(false);
+        historyMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                historyMenuActionPerformed(evt);
+            }
+        });
+        accountMenu.add(historyMenu);
+
+        aktuelleAusleiheMenu.setText("aktuelle Ausleihe");
+        aktuelleAusleiheMenu.setEnabled(false);
+        aktuelleAusleiheMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aktuelleAusleiheMenuActionPerformed(evt);
+            }
+        });
+        accountMenu.add(aktuelleAusleiheMenu);
+        accountMenu.add(jSeparator1);
+
+        beendenMenu.setText("Beenden");
+        beendenMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                beendenMenuActionPerformed(evt);
+            }
+        });
+        accountMenu.add(beendenMenu);
+
+        jMenuBar1.add(accountMenu);
+
+        helpMenu.setText("Help");
+
+        informationMenu.setText("Information");
+        informationMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                informationMenuActionPerformed(evt);
+            }
+        });
+        helpMenu.add(informationMenu);
+
+        supportMenu.setText("Support");
+        supportMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supportMenuActionPerformed(evt);
+            }
+        });
+        helpMenu.add(supportMenu);
+
+        startMenu.setText("Startseite");
+        startMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startMenuActionPerformed(evt);
+            }
+        });
+        helpMenu.add(startMenu);
+
+        optionMenu.setText("Option");
+        optionMenu.setEnabled(false);
+        optionMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                optionMenuActionPerformed(evt);
+            }
+        });
+        helpMenu.add(optionMenu);
+
+        jMenuBar1.add(helpMenu);
+
+        administrationMenu.setText("Administration");
+        administrationMenu.setEnabled(false);
+
+        accountsBearbeitenItem.setText("Accounts bearbeiten");
+        accountsBearbeitenItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accountsBearbeitenItemActionPerformed(evt);
+            }
+        });
+        administrationMenu.add(accountsBearbeitenItem);
+
+        ausleihenBearbeiten.setText("Ausleihen bearbeiten");
+        ausleihenBearbeiten.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ausleihenBearbeitenActionPerformed(evt);
+            }
+        });
+        administrationMenu.add(ausleihenBearbeiten);
+
+        jMenuBar1.add(administrationMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -121,6 +260,10 @@ public class UI extends javax.swing.JFrame {
         entwicklung();
     }//GEN-LAST:event_supportMenuActionPerformed
 
+    private void startMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startMenuActionPerformed
+        mainFrame();
+    }//GEN-LAST:event_startMenuActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem LoginLogoutMenu;
     private javax.swing.JMenu accountMenu;
@@ -137,8 +280,8 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JMenuItem optionMenu;
+    private javax.swing.JMenuItem startMenu;
     private javax.swing.JMenuItem supportMenu;
     // End of variables declaration//GEN-END:variables
     // Variablen
@@ -177,5 +320,11 @@ public class UI extends javax.swing.JFrame {
         historyMenu.setEnabled(false);
         aktuelleAusleiheMenu.setEnabled(false);
         administrationMenu.setEnabled(false);
+    }
+    
+    private void mainFrame(){
+        panelHandler.panelUnsichtbar();
+        add(panelHandler.getSuchePanel());
+        panelHandler.getSuchePanel().setVisible(true);
     }
 }
