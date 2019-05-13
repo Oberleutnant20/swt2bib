@@ -32,7 +32,7 @@ public class LoginPanel extends ElternPanel {
     private void initComponents() {
 
         accountnameField = new javax.swing.JTextField();
-        passwortField = new javax.swing.JTextField();
+        passwortField = new javax.swing.JPasswordField();
         loginButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -133,7 +133,7 @@ public class LoginPanel extends ElternPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton loginButton;
     private javax.swing.JLabel meldungText;
-    private javax.swing.JTextField passwortField;
+    private javax.swing.JPasswordField passwortField;
     private javax.swing.JTextField sucheField;
     // End of variables declaration//GEN-END:variables
 
