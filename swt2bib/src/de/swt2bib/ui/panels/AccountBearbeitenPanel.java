@@ -1,13 +1,8 @@
 package de.swt2bib.ui.panels;
 
 import de.swt2bib.fachlogik.accountverwaltung.Account;
-import de.swt2bib.fachlogik.crypt.Password;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -21,7 +16,6 @@ public class AccountBearbeitenPanel extends ElternPanel {
     
     private Account account;
     private boolean neu;
-    private Password passwd = new Password();
             
     /**
      *
@@ -55,8 +49,8 @@ public class AccountBearbeitenPanel extends ElternPanel {
         nameField = new javax.swing.JTextField();
         hausnummerField = new javax.swing.JTextField();
         stadtField = new javax.swing.JTextField();
-        checkPasswortField = new javax.swing.JTextField();
-        passwortField = new javax.swing.JTextField();
+        checkPasswortField = new javax.swing.JPasswordField();
+        passwortField = new javax.swing.JPasswordField();
         plzField = new javax.swing.JTextField();
         strasseField = new javax.swing.JTextField();
         sucheField = new javax.swing.JTextField();
@@ -213,32 +207,26 @@ public class AccountBearbeitenPanel extends ElternPanel {
             meldungText.setText("PLZ ist ungültig.");
             return;
         }
-        try {
-            if(passwd.getSHA512(passwortField.getText()).equals(passwd.getSHA512(checkPasswortField.getText()))){
-                String hausnummer = hausnummerField.getText();
-                String name = nameField.getText();
-                int plz = Integer.parseInt(plzField.getText());
-                String stadt = stadtField.getText();
-                String strasse = strasseField.getText();
-                String vorname = vornameField.getText();
-                String passwort = passwd.getSHA512(passwortField.getText());
-                boolean mitarbeiter = mitarbeiterCheckBox.isSelected();
-                save(account.getUserid(),hausnummer, name, plz, stadt, strasse, vorname, passwort,mitarbeiter);
-                meldungText.setText("Änderungen wurden übernommen.");
-            }
-            else{
-                meldungText.setText("Passwort stimmt nicht überein.");
-            }
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(AccountBearbeitenPanel.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(AccountBearbeitenPanel.class.getName()).log(Level.SEVERE, null, ex);
+        if(passwortField.getText().equals(checkPasswortField.getText())){
+            String hausnummer = hausnummerField.getText();
+            String name = nameField.getText();
+            int plz = Integer.parseInt(plzField.getText());
+            String stadt = stadtField.getText();
+            String strasse = strasseField.getText();
+            String vorname = vornameField.getText();
+            String passwort = passwortField.getText();
+            boolean mitarbeiter = mitarbeiterCheckBox.isSelected();
+            save(account.getUserid(),hausnummer, name, plz, stadt, strasse, vorname, passwort,mitarbeiter);
+            meldungText.setText("Änderungen wurden übernommen.");
+        }
+        else{
+            meldungText.setText("Passwort stimmt nicht überein.");
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField checkPasswortField;
+    private javax.swing.JPasswordField checkPasswortField;
     private javax.swing.JLabel checkPasswortLable;
     private javax.swing.JTextField hausnummerField;
     private javax.swing.JLabel hausnummerLable;
@@ -246,7 +234,7 @@ public class AccountBearbeitenPanel extends ElternPanel {
     private javax.swing.JCheckBox mitarbeiterCheckBox;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLable;
-    private javax.swing.JTextField passwortField;
+    private javax.swing.JPasswordField passwortField;
     private javax.swing.JLabel passwortLable;
     private javax.swing.JTextField plzField;
     private javax.swing.JLabel plzLable;
