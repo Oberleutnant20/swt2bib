@@ -5,6 +5,7 @@ import de.swt2bib.fachlogik.kategorieverwaltung.Kategorienverwaltung;
 import de.swt2bib.fachlogik.accountverwaltung.Accountverwaltung;
 import de.swt2bib.fachlogik.ausleihverwaltung.Ausleihe;
 import de.swt2bib.fachlogik.ausleihverwaltung.Ausleiheverwaltung;
+import de.swt2bib.fachlogik.crypt.Password;
 import de.swt2bib.fachlogik.genreverwaltung.Genreverwaltung;
 import de.swt2bib.fachlogik.historyverwaltung.History;
 import de.swt2bib.fachlogik.historyverwaltung.Historyverwaltung;
@@ -13,9 +14,13 @@ import de.swt2bib.fachlogik.medienverwaltung.Medienverwaltung;
 import de.swt2bib.ui.PanelHandler;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -33,6 +38,7 @@ public class Controller {
     private Account aktuellerUser;
     private ArrayList<History> historyListe;
     private ArrayList<Ausleihe> ausleiheListe;
+    private Password passwd = new Password();
 
     public Controller(Accountverwaltung accountverwaltung, Medienverwaltung medienverwaltung, Ausleiheverwaltung ausleiheverwaltung, Kategorienverwaltung kategorienverwaltung, Genreverwaltung genreverwaltung,Historyverwaltung historyverwaltung) {
         this.accountverwaltung = accountverwaltung;
@@ -92,8 +98,14 @@ public class Controller {
     private Account matchingUser(String accountname, String passwort) {
         List<Account> list = accountverwaltung.get();
         for(int i = 0; i < list.size() ; i++){
-            if(list.get(i).getPasswort().equals(passwort)&&list.get(i).getUsername().equals(accountname)){
-                return list.get(i);
+            try {
+                if(list.get(i).getPasswort().equals(passwd.getSHA512(passwort))&&list.get(i).getUsername().equals(accountname)){
+                    return list.get(i);
+                }
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return null;
@@ -190,5 +202,17 @@ public class Controller {
 
     public void saveAusleihe(Ausleihe a) {
         ausleiheverwaltung.add(a);
+    }
+    
+    public String generatePwHash(String passwd){
+        String ret = null;
+        try {
+            ret = this.passwd.getSHA512(passwd);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
     }
 }

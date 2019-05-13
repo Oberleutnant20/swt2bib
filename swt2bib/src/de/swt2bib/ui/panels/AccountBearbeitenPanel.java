@@ -1,8 +1,13 @@
 package de.swt2bib.ui.panels;
 
 import de.swt2bib.fachlogik.accountverwaltung.Account;
+import de.swt2bib.fachlogik.crypt.Password;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,6 +21,7 @@ public class AccountBearbeitenPanel extends ElternPanel {
     
     private Account account;
     private boolean neu;
+    private Password passwd = new Password();
             
     /**
      *
@@ -207,20 +213,26 @@ public class AccountBearbeitenPanel extends ElternPanel {
             meldungText.setText("PLZ ist ungültig.");
             return;
         }
-        if(passwortField.getText().equals(checkPasswortField.getText())){
-            String hausnummer = hausnummerField.getText();
-            String name = nameField.getText();
-            int plz = Integer.parseInt(plzField.getText());
-            String stadt = stadtField.getText();
-            String strasse = strasseField.getText();
-            String vorname = vornameField.getText();
-            String passwort = passwortField.getText();
-            boolean mitarbeiter = mitarbeiterCheckBox.isSelected();
-            save(account.getUserid(),hausnummer, name, plz, stadt, strasse, vorname, passwort,mitarbeiter);
-            meldungText.setText("Änderungen wurden übernommen.");
-        }
-        else{
-            meldungText.setText("Passwort stimmt nicht überein.");
+        try {
+            if(passwd.getSHA512(passwortField.getText()).equals(passwd.getSHA512(checkPasswortField.getText()))){
+                String hausnummer = hausnummerField.getText();
+                String name = nameField.getText();
+                int plz = Integer.parseInt(plzField.getText());
+                String stadt = stadtField.getText();
+                String strasse = strasseField.getText();
+                String vorname = vornameField.getText();
+                String passwort = passwd.getSHA512(passwortField.getText());
+                boolean mitarbeiter = mitarbeiterCheckBox.isSelected();
+                save(account.getUserid(),hausnummer, name, plz, stadt, strasse, vorname, passwort,mitarbeiter);
+                meldungText.setText("Änderungen wurden übernommen.");
+            }
+            else{
+                meldungText.setText("Passwort stimmt nicht überein.");
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(AccountBearbeitenPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(AccountBearbeitenPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 

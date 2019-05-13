@@ -1,3 +1,4 @@
+import de.swt2bib.fachlogik.crypt.Password;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 

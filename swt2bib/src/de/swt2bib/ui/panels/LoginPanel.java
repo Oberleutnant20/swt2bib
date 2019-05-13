@@ -5,6 +5,7 @@ import de.swt2bib.ui.PanelHandler;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
 
+
 /**
  *
  * @author root
@@ -107,7 +108,6 @@ public class LoginPanel extends ElternPanel {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         if(!online){
             einloggen();
-            
         }
         else{
             try {
@@ -161,4 +161,5 @@ public class LoginPanel extends ElternPanel {
         passwortField.setEnabled(true);
         online = false;
     }
+    
 }
