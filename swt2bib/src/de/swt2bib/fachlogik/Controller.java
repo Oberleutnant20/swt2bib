@@ -97,15 +97,10 @@ public class Controller {
 
     private Account matchingUser(String accountname, String passwort) {
         List<Account> list = accountverwaltung.get();
+        String compare = generatePwHash(passwort);
         for(int i = 0; i < list.size() ; i++){
-            try {
-                if(list.get(i).getPasswort().equals(passwd.getSHA512(passwort))&&list.get(i).getUsername().equals(accountname)){
-                    return list.get(i);
-                }
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            if(list.get(i).getPasswort().equals(compare)&&list.get(i).getUsername().equals(accountname)){
+                return list.get(i);
             }
         }
         return null;

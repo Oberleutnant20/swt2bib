@@ -5,3 +5,5 @@
 
 USE swt2bib;
 SELECT * FROM User;
+
+-- Select u_passwd From User where u_login like 'Test'; 

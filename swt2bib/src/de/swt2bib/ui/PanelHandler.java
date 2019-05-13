@@ -134,8 +134,8 @@ public class PanelHandler {
     }
 
     public boolean login(String accountname, String passwort) {
-        if(controller.setAktuellerUser(accountname, passwort)!=null){
-            this.aktuellerUser =controller.setAktuellerUser(accountname, passwort);
+        if(controller.setAktuellerUser(accountname, passwort)!= null){
+            this.aktuellerUser = controller.setAktuellerUser(accountname, passwort);
             if(controller.isMitarbeiter()){
                 ui.setMitarbeiterOnline();
             }
@@ -148,7 +148,8 @@ public class PanelHandler {
     }
 
     public void saveAccountChange(int id, String hausnummer, String name, int plz, String ort, String strasse, String vorname, String passwort, boolean mitarbeiter, String accountname) {
-        Account a = new Account(accountname, controller.generatePwHash(passwort), mitarbeiter, id, vorname, name, plz, strasse, hausnummer, ort);
+        String pwtmp = controller.generatePwHash(passwort);
+        Account a = new Account(accountname, pwtmp, mitarbeiter, id, vorname, name, plz, strasse, hausnummer, ort);
         controller.saveAccountChange(a);
     }
 
@@ -161,7 +162,8 @@ public class PanelHandler {
     }
 
     public void saveAccount(int id, String hausnummer, String name, int plz, String ort, String strasse, String vorname, String passwort, boolean mitarbeiter, String accountname) {
-        controller.saveAccount(new Account(accountname, controller.generatePwHash(passwort), mitarbeiter, id, vorname, name, plz, strasse, hausnummer, ort));
+        String pwtmp = controller.generatePwHash(passwort);
+        controller.saveAccount(new Account(accountname, pwtmp, mitarbeiter, id, vorname, name, plz, strasse, hausnummer, ort));
     }
 
     void loadUserAusleihe() {
