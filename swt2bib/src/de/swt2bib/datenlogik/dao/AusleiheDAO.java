@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author Tim Lorse
  */
-public class AusleiheDAO implements IAusleiheDAO {
+public class AusleiheDAO extends ElternDAO implements IAusleiheDAO {
 
     private final Database db = new Database();
     private final Connection con = db.connect_mysql_schema();

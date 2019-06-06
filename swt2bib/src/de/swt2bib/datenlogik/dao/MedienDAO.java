@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author Tim Lorse
  */
-public class MedienDAO implements IMedienDAO {
+public class MedienDAO extends ElternDAO implements IMedienDAO {
 
     private final Database db = new Database();
     private final Connection con = db.connect_mysql_schema();

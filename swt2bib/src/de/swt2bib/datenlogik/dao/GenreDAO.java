@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Tim Lorse
  */
-public class GenreDAO implements IGenreDAO {
+public class GenreDAO extends ElternDAO implements IGenreDAO {
 
     private final Database db = new Database();
     private final Connection con = db.connect_mysql_schema();

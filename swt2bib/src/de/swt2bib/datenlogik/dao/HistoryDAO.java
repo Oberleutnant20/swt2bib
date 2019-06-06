@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Tim Lorse
  */
-public class HistoryDAO implements IHistoryDAO {
+public class HistoryDAO extends ElternDAO implements IHistoryDAO {
 
     private final Database db = new Database();
     private final Connection con = db.connect_mysql_schema();
