@@ -1,8 +1,8 @@
 package de.swt2bib.datenlogik.dao;
 
 import de.swt2bib.datenlogik.Database;
+import de.swt2bib.datenlogik.dto.Account;
 import de.swt2bib.datenlogik.idao.IAccountDAO;
-import de.swt2bib.fachlogik.accountverwaltung.Account;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
 import java.sql.Connection;
@@ -99,5 +99,4 @@ public class AccountDAO extends ElternDAO implements IAccountDAO {
             throw new ConnectionError();
         }
     }
-
 }

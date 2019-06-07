@@ -1,5 +1,6 @@
 package de.swt2bib.fachlogik.medienverwaltung;
 
+import de.swt2bib.datenlogik.dto.Medien;
 import de.swt2bib.datenlogik.idao.IMedienDAO;
 import de.swt2bib.fachlogik.ElternVerwaltung;
 import de.swt2bib.info.exceptions.ConnectionError;

@@ -1,5 +1,6 @@
 package de.swt2bib.fachlogik.genreverwaltung;
 
+import de.swt2bib.datenlogik.dto.Genre;
 import de.swt2bib.datenlogik.idao.IGenreDAO;
 import de.swt2bib.fachlogik.ElternVerwaltung;
 import de.swt2bib.info.exceptions.ConnectionError;

@@ -1,5 +1,6 @@
 package de.swt2bib.fachlogik.accountverwaltung;
 
+import de.swt2bib.datenlogik.dto.Account;
 import de.swt2bib.datenlogik.idao.IAccountDAO;
 import de.swt2bib.fachlogik.ElternVerwaltung;
 import de.swt2bib.info.exceptions.ConnectionError;

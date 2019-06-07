@@ -1,7 +1,8 @@
 package de.swt2bib.ui;
 
+import de.swt2bib.datenlogik.dto.Genre;
+import de.swt2bib.datenlogik.dto.Kategorie;
 import de.swt2bib.info.Informationen;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -12,19 +13,20 @@ import javax.swing.JPanel;
  */
 public class UI extends javax.swing.JFrame {
 
-    private boolean online;
+    List<Genre> genreListe;
+    List<Kategorie> kategorieListe;
+    PanelHandler panelHandler;
 
     /**
      * Creates new form UI
      */
-    public UI(List genreListe, List kategorieListe, PanelHandler panelHandler, boolean online) {
-        this.genreListe = new ArrayList<String>();
-        this.kategorieListe = new ArrayList<String>();
+    public UI(List<Genre> genreListe, List<Kategorie> kategorieListe, PanelHandler panelHandler) {
+        this.genreListe = genreListe;
+        this.kategorieListe = kategorieListe;
         initComponents();
         setLayout(new java.awt.BorderLayout());
         setVisible(true);
         this.panelHandler = panelHandler;
-        this.online = online;
     }
 
     public JPanel getjPanel1() {
@@ -285,9 +287,6 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JMenuItem supportMenu;
     // End of variables declaration//GEN-END:variables
     // Variablen
-    List genreListe;
-    List kategorieListe;
-    PanelHandler panelHandler;
 
     private void info() {
         JOptionPane.showMessageDialog(rootPane, new Informationen().printEntwickler(), "Entwicklerinfo", JOptionPane.INFORMATION_MESSAGE);
@@ -298,7 +297,7 @@ public class UI extends javax.swing.JFrame {
     }
 
     void setMitarbeiterOnline() {
-        System.out.println("enable admin");
+        //System.out.println("enable admin");
         administrationMenu.setEnabled(true);
 
         panelHandler.loadAdminAccounts();
@@ -306,13 +305,13 @@ public class UI extends javax.swing.JFrame {
     }
 
     void setUserOnline() {
-        System.out.println("enable user");
+        //System.out.println("enable user");
         editAccountMenu.setEnabled(true);
         historyMenu.setEnabled(true);
         aktuelleAusleiheMenu.setEnabled(true);
 
-        panelHandler.loadUserHistory();
-        panelHandler.loadUserAusleihe();
+        panelHandler.getHistory();
+        panelHandler.getAusleihe();
     }
 
     void setUserOffline() {
@@ -321,8 +320,8 @@ public class UI extends javax.swing.JFrame {
         aktuelleAusleiheMenu.setEnabled(false);
         administrationMenu.setEnabled(false);
     }
-    
-    private void mainFrame(){
+
+    private void mainFrame() {
         panelHandler.panelUnsichtbar();
         add(panelHandler.getSuchePanel());
         panelHandler.getSuchePanel().setVisible(true);

@@ -1,5 +1,6 @@
 package de.swt2bib.fachlogik.ausleihverwaltung;
 
+import de.swt2bib.datenlogik.dto.Ausleihe;
 import de.swt2bib.datenlogik.idao.IAusleiheDAO;
 import de.swt2bib.fachlogik.ElternVerwaltung;
 import de.swt2bib.info.exceptions.ConnectionError;

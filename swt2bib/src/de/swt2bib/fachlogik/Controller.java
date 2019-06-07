@@ -10,15 +10,18 @@ import de.swt2bib.fachlogik.ausleihverwaltung.Ausleiheverwaltung;
 import de.swt2bib.fachlogik.genreverwaltung.Genreverwaltung;
 import de.swt2bib.fachlogik.historyverwaltung.Historyverwaltung;
 import de.swt2bib.fachlogik.medienverwaltung.Medienverwaltung;
-import de.swt2bib.Logger;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
 import de.swt2bib.info.exceptions.ConnectionError;
 import de.swt2bib.fachlogik.crypt.Password;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -50,7 +53,7 @@ public class Controller {
     }
 
     private void start() {
-        Logger.info(this, "starten");
+        de.swt2bib.Logger.info(this, "starten");
         initVerwaltungLaden();
         ausleihenPruefen();
         panelHandler = new PanelHandler(this, genreverwaltung.get(), kategorienverwaltung.get());
@@ -66,7 +69,7 @@ public class Controller {
     }
 
     public void initUpdate() {
-        Logger.info(this, "initUpdate");
+        de.swt2bib.Logger.info(this, "initUpdate");
         medienverwaltung.notifyPanels();
         ausleiheverwaltung.notifyPanels();
         kategorienverwaltung.notifyPanels();
@@ -79,7 +82,7 @@ public class Controller {
     }
 
     public Account setAktuellerUser(String accountname, String passwort) {
-        Logger.info(this, "setAktuellerUser");
+        de.swt2bib.Logger.info(this, "setAktuellerUser");
         aktuellerUser = matchingUser(accountname, passwort);
         if (aktuellerUser != null) {
             ladeUserDaten();
@@ -90,7 +93,7 @@ public class Controller {
     }
 
     public boolean isMitarbeiter() {
-        Logger.info(this, "isMitarbeiter");
+        de.swt2bib.Logger.info(this, "isMitarbeiter");
         if (aktuellerUser != null) {
             return aktuellerUser.isMitarbeiter();
         }
@@ -98,12 +101,12 @@ public class Controller {
     }
 
     public void addHistory(History history) {
-        Logger.info(this, "addHistory");
+        de.swt2bib.Logger.info(this, "addHistory");
         historyverwaltung.add(history);
     }
 
     public void addAusleihe(Ausleihe ausleihe) {
-        Logger.info(this, "addAusleihe");
+        de.swt2bib.Logger.info(this, "addAusleihe");
         ausleiheverwaltung.add(ausleihe);
     }
 
@@ -111,8 +114,9 @@ public class Controller {
         historyListe = ladeHistory();
         ausleiheListe = ladeAusleihe();
     }
-    private Account matchingUser(String accountname, String passwort) {
-        Logger.info(this, "matchingUser");
+    
+    public Account matchingUser(String accountname, String passwort) {
+        de.swt2bib.Logger.info(this, "matchingUser");
         List<Account> list = accountverwaltung.get();
         String compare = generatePwHash(passwort);
         for(int i = 0; i < list.size() ; i++){
@@ -126,11 +130,11 @@ public class Controller {
     private ArrayList<History> ladeHistory() {
         int userid = aktuellerUser.getUserid();
         ArrayList<History> list = new ArrayList<History>();
-        Logger.info(this, "ladeHistory");
+        de.swt2bib.Logger.info(this, "ladeHistory");
         List<History> listegesamt = historyverwaltung.get();
         for (int i = 0; i < listegesamt.size(); i++) {
             if (listegesamt.get(i).getUserid() == userid) {
-                Logger.debug(this, "ladeHistory, History füllen");
+                de.swt2bib.Logger.debug(this, "ladeHistory, History füllen");
                 list.add(listegesamt.get(i));
             }
         }
@@ -140,12 +144,12 @@ public class Controller {
     private ArrayList<Ausleihe> ladeAusleihe() {
         int userid = aktuellerUser.getUserid();
         ArrayList<Ausleihe> list = new ArrayList<Ausleihe>();
-        Logger.info(this, "ladeAusleihe");
+        de.swt2bib.Logger.info(this, "ladeAusleihe");
         List<Ausleihe> listegesamt = ausleiheverwaltung.get();
         for (int i = 0; i < listegesamt.size(); i++) {
-            Logger.debug(this, "ladeAusleihe, Ausleihe Schleife");
+            de.swt2bib.Logger.debug(this, "ladeAusleihe, Ausleihe Schleife");
             if (listegesamt.get(i).getUserid() == userid) {
-                Logger.debug(this, "ladeAusleihe, Ausleihe füllen");
+                de.swt2bib.Logger.debug(this, "ladeAusleihe, Ausleihe füllen");
                 list.add(listegesamt.get(i));
             }
         }
@@ -223,7 +227,7 @@ public class Controller {
                 //historyListe.add(history);
                 ausleiheverwaltung.delete(liste.get(i));
             }
-            System.out.println("ka");
+            //System.out.println("ka");
         }
     }
 
@@ -265,5 +269,17 @@ public class Controller {
         for (ElternPanel panel : panels) {
             accountverwaltung.addPanelList(panel);
         }
+    }
+    
+    public String generatePwHash(String passwd){
+        String ret = null;
+        try {
+            ret = this.passwd.getSHA512(passwd);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
     }
 }

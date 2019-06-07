@@ -1,5 +1,6 @@
 package de.swt2bib.fachlogik.historyverwaltung;
 
+import de.swt2bib.datenlogik.dto.History;
 import de.swt2bib.datenlogik.idao.IHistoryDAO;
 import de.swt2bib.fachlogik.ElternVerwaltung;
 import de.swt2bib.info.exceptions.ConnectionError;

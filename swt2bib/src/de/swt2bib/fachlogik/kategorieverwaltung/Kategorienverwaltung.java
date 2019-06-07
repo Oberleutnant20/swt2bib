@@ -1,5 +1,6 @@
 package de.swt2bib.fachlogik.kategorieverwaltung;
 
+import de.swt2bib.datenlogik.dto.Kategorie;
 import de.swt2bib.datenlogik.idao.IKategorieDAO;
 import de.swt2bib.fachlogik.ElternVerwaltung;
 import de.swt2bib.info.exceptions.ConnectionError;

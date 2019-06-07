@@ -1,6 +1,6 @@
 package de.swt2bib.ui.panels;
 
-import de.swt2bib.fachlogik.accountverwaltung.Account;
+import de.swt2bib.datenlogik.dto.Account;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
 
@@ -285,5 +285,18 @@ public class AccountBearbeitenPanel extends ElternPanel {
         strasseField.setText(a.getStrasse());
         vornameField.setText(a.getVorname());
         mitarbeiterCheckBox.setSelected(a.isMitarbeiter());
+    }
+    
+    @Override
+    public void update() {
+        if(account!=null){
+        hausnummerField.setText(account.getHausnummer());
+        nameField.setText(account.getNachname());
+        plzField.setText(""+account.getPlz());
+        stadtField.setText(account.getOrt());
+        strasseField.setText(account.getStrasse());
+        vornameField.setText(account.getVorname());
+        mitarbeiterCheckBox.setSelected(account.isMitarbeiter());
+        }
     }
 }

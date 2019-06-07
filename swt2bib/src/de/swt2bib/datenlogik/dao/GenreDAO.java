@@ -2,7 +2,7 @@ package de.swt2bib.datenlogik.dao;
 
 import de.swt2bib.datenlogik.Database;
 import de.swt2bib.datenlogik.idao.IGenreDAO;
-import de.swt2bib.fachlogik.genreverwaltung.Genre;
+import de.swt2bib.datenlogik.dto.Genre;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
 import java.sql.Connection;
@@ -59,6 +59,5 @@ public class GenreDAO extends ElternDAO implements IGenreDAO {
             throw new ConnectionError();
         }
     }
-
 }
 

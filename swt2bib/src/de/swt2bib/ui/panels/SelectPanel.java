@@ -1,8 +1,8 @@
 package de.swt2bib.ui.panels;
 
-import de.swt2bib.fachlogik.genreverwaltung.Genre;
-import de.swt2bib.fachlogik.kategorieverwaltung.Kategorie;
-import de.swt2bib.fachlogik.medienverwaltung.Medien;
+import de.swt2bib.datenlogik.dto.Genre;
+import de.swt2bib.datenlogik.dto.Kategorie;
+import de.swt2bib.datenlogik.dto.Medien;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
 import java.text.DateFormat;
@@ -24,17 +24,15 @@ public class SelectPanel extends ElternPanel {
 
     private Medien medium;
 
-//    private final ArrayList<String> genreListe;
-//
-//    private final ArrayList<String> kategorieListe;
+    //private final ArrayList<String> genreListe;
+    //
+    //private final ArrayList<String> kategorieListe;
     /**
      * Creates new form SelectPanel
      */
     public SelectPanel(PanelHandler panelHandler) {
         super(panelHandler);
         initComponents();
-        setComboboxKategorie(kategorieComboBox, panelHandler.getKategorieListe());
-        setComboboxGenre(genreComboBox, panelHandler.getGenreListe());
         setComboboxDate(dateComboBox);
     }
 
@@ -50,7 +48,7 @@ public class SelectPanel extends ElternPanel {
         nameField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         beschreibungField = new javax.swing.JTextArea();
-        ausleihenVormerkenButton = new javax.swing.JButton();
+        ausleihenButton = new javax.swing.JButton();
         statusField = new javax.swing.JTextField();
         bearbeitenButton = new javax.swing.JButton();
         nameLable = new javax.swing.JLabel();
@@ -63,14 +61,10 @@ public class SelectPanel extends ElternPanel {
         sucheField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         dateComboBox = new javax.swing.JComboBox<>();
+        infoLabel = new javax.swing.JLabel();
 
         nameField.setText("jTextField1");
         nameField.setEnabled(false);
-        nameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameFieldActionPerformed(evt);
-            }
-        });
 
         beschreibungField.setColumns(20);
         beschreibungField.setRows(5);
@@ -78,20 +72,15 @@ public class SelectPanel extends ElternPanel {
         beschreibungField.setEnabled(false);
         jScrollPane1.setViewportView(beschreibungField);
 
-        ausleihenVormerkenButton.setText("Ausleihen/Vormerken");
-        ausleihenVormerkenButton.addActionListener(new java.awt.event.ActionListener() {
+        ausleihenButton.setText("Ausleihen");
+        ausleihenButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ausleihenVormerkenButtonActionPerformed(evt);
+                ausleihenButtonActionPerformed(evt);
             }
         });
 
         statusField.setText("jTextField2");
         statusField.setEnabled(false);
-        statusField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statusFieldActionPerformed(evt);
-            }
-        });
 
         bearbeitenButton.setText("Speichern");
         bearbeitenButton.setEnabled(false);
@@ -116,11 +105,6 @@ public class SelectPanel extends ElternPanel {
 
         kategorieComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         kategorieComboBox.setEnabled(false);
-        kategorieComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kategorieComboBoxActionPerformed(evt);
-            }
-        });
 
         sucheField.setText("Titelsuche...");
         sucheField.addActionListener(new java.awt.event.ActionListener() {
@@ -133,6 +117,8 @@ public class SelectPanel extends ElternPanel {
 
         dateComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        infoLabel.setText("Status:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -141,42 +127,40 @@ public class SelectPanel extends ElternPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dateComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(ausleihenButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(infoLabel))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(nameLable)
                             .addComponent(beschreibungLable)
                             .addComponent(kategorieLable))
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(kategorieComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(statusLable))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dateComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(ausleihenVormerkenButton))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(statusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(genreLable)
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(genreComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                                .addComponent(bearbeitenButton)
-                                .addGap(33, 33, 33)))))
-                .addContainerGap())
+                                .addComponent(kategorieComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)
+                                .addComponent(genreLable)
+                                .addGap(20, 20, 20)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(genreComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(23, 23, 23))
+                                    .addComponent(bearbeitenButton, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(statusLable))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(statusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(sucheField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -184,34 +168,31 @@ public class SelectPanel extends ElternPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addComponent(sucheField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameLable)
+                    .addComponent(statusLable)
+                    .addComponent(statusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(beschreibungLable))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nameLable)
-                            .addComponent(statusLable)
-                            .addComponent(statusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(beschreibungLable))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(kategorieLable)
                             .addComponent(kategorieComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(ausleihenVormerkenButton))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ausleihenButton)
+                            .addComponent(infoLabel)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(genreLable)
-                                    .addComponent(genreComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(sucheField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(genreLable)
+                            .addComponent(genreComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(bearbeitenButton)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -220,14 +201,6 @@ public class SelectPanel extends ElternPanel {
                 .addGap(7, 7, 7))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void statusFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_statusFieldActionPerformed
-
-    private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
-        //TODO add your handling code here:
-    }//GEN-LAST:event_nameFieldActionPerformed
 
     private void sucheFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucheFieldActionPerformed
         panelHandler.panelUnsichtbar();
@@ -239,46 +212,55 @@ public class SelectPanel extends ElternPanel {
         String beschreibung = beschreibungField.getText();
         String name = nameField.getText();
         String desc = beschreibungField.getText();
-
         Kategorie kategorie = null;// kategorieComboBox.getSelectedItem();
-
         for (int i = 0; i < panelHandler.getKategorieListe().size(); i++) {
             if (panelHandler.getKategorieListe().get(i).getBezeichnung().equals(kategorieComboBox.getSelectedItem())) {
                 kategorie = panelHandler.getKategorieListe().get(i);
             }
         }
-
         Genre genre = null;//genreComboBox.getSelectedItem();
-
         for (int i = 0; i < panelHandler.getGenreListe().size(); i++) {
             if (panelHandler.getGenreListe().get(i).getBezeichnung().equals(genreComboBox.getSelectedItem())) {
                 genre = panelHandler.getGenreListe().get(i);
             }
         }
-
-        Medien m = new Medien(medium.getIsbn(), medium.getBarcodenummer(), genre, kategorie, name, medium.isAusgeliehen(), medium.isVorgemerkt(), medium.getId(), medium.getAnzahl(), medium.getAuthor(), desc);
+        Medien m = new Medien(medium.getIsbn(), medium.getBarcodenummer(), genre.getId(), kategorie.getId(), name, medium.getId(), medium.getAnzahl(), medium.getAuthor(), desc);
         panelHandler.saveMediumChange(m);
+        infoLabel.setText("Status: Erfolgreich gespeichert");
     }//GEN-LAST:event_bearbeitenButtonActionPerformed
 
-    private void ausleihenVormerkenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ausleihenVormerkenButtonActionPerformed
-        if (statusField.getText().equals("ausgeliehen") || statusField.getText().equals("bereits vorgemerkt")) {
-            if (statusField.getText().equals("bereits vorgemerkt")) {
-            } else {
-                medium.setVorgemerkt(true);
-                statusField.setText("bereits vorgemerkt");
-            }
+    private void ausleihenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ausleihenButtonActionPerformed
+        if (statusField.getText().equals("ausgeliehen")) {
+            infoLabel.setText("Status: Ist bereits ausgeliehen");
         } else {
-            Date date = new Date(dateComboBox.getSelectedItem().toString()+"");
-            medium.berechneVerfuegbare(1);
-            panelHandler.createNewAusleihe(medium.getId(), date, medium.getKategorien().getId());
+            Date date = new Date(dateComboBox.getSelectedItem().toString() + "");
+            panelHandler.createNewAusleihe(medium.getId(), date, medium.getKategorienId());
+            infoLabel.setText("Status: erfolgreich ausgeliehen");
+            ausleihenButton.setEnabled(false);
         }
         panelHandler.saveMediumChange(medium);
+    }//GEN-LAST:event_ausleihenButtonActionPerformed
 
-    }//GEN-LAST:event_ausleihenVormerkenButtonActionPerformed
 
-    private void kategorieComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kategorieComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_kategorieComboBoxActionPerformed
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ausleihenButton;
+    private javax.swing.JButton bearbeitenButton;
+    private javax.swing.JTextArea beschreibungField;
+    private javax.swing.JLabel beschreibungLable;
+    private javax.swing.JComboBox<String> dateComboBox;
+    private javax.swing.JComboBox<String> genreComboBox;
+    private javax.swing.JLabel genreLable;
+    private javax.swing.JLabel infoLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox<String> kategorieComboBox;
+    private javax.swing.JLabel kategorieLable;
+    private javax.swing.JTextField nameField;
+    private javax.swing.JLabel nameLable;
+    private javax.swing.JTextField statusField;
+    private javax.swing.JLabel statusLable;
+    private javax.swing.JTextField sucheField;
+    // End of variables declaration//GEN-END:variables
 
     public void setMitarbeiter() {
         bearbeitenButton.setEnabled(true);
@@ -291,37 +273,19 @@ public class SelectPanel extends ElternPanel {
 
     public void setMedium(Medien m) {
         medium = m;
-        if (m.isAusgeliehen()) {
+        infoLabel.setText("Status:");
+        if (panelHandler.getVerfuegbare((int) m.getId()) == 0) {
             statusField.setText("ausgeliehen");
-            if (m.isVorgemerkt()) {
-                statusField.setText("bereits vorgemerkt");
-            }
+            ausleihenButton.setEnabled(false);
         } else {
             statusField.setText("vorhanden");
+            ausleihenButton.setEnabled(true);
         }
         beschreibungField.setText("blablalba - in arbeit");
         nameField.setText(m.getName());
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton ausleihenVormerkenButton;
-    private javax.swing.JButton bearbeitenButton;
-    private javax.swing.JTextArea beschreibungField;
-    private javax.swing.JLabel beschreibungLable;
-    private javax.swing.JComboBox<String> dateComboBox;
-    private javax.swing.JComboBox<String> genreComboBox;
-    private javax.swing.JLabel genreLable;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox<String> kategorieComboBox;
-    private javax.swing.JLabel kategorieLable;
-    private javax.swing.JTextField nameField;
-    private javax.swing.JLabel nameLable;
-    private javax.swing.JTextField statusField;
-    private javax.swing.JLabel statusLable;
-    private javax.swing.JTextField sucheField;
-    // End of variables declaration//GEN-END:variables
-private void setComboboxKategorie(JComboBox combobox, List<Kategorie> list) {
+    private void setComboboxKategorie(JComboBox combobox, List<Kategorie> list) {
         String[] tmp = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
             tmp[i] = list.get(i).getBezeichnung();
@@ -338,14 +302,14 @@ private void setComboboxKategorie(JComboBox combobox, List<Kategorie> list) {
     }
 
     private void setComboboxDate(JComboBox combobox) {
-        ArrayList<Date> list = new ArrayList<Date>();
-        for(int i = 15; i<=45;i+=15){
-            list.add(addDays(i));
+        ArrayList<Date> datelist = new ArrayList<Date>();
+        for (int i = 15; i <= 45; i += 15) {
+            datelist.add(addDays(i));
         }
-        String[] tmp = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
+        String[] tmp = new String[datelist.size()];
+        for (int i = 0; i < datelist.size(); i++) {
             DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.ENGLISH);//
-            String date = formatter.format(list.get(i));
+            String date = formatter.format(datelist.get(i));
             tmp[i] = date;
         }
         combobox.setModel(new DefaultComboBoxModel(tmp));
@@ -356,5 +320,11 @@ private void setComboboxKategorie(JComboBox combobox, List<Kategorie> list) {
         c.add(Calendar.DATE, days);
         Date date = c.getTime();
         return date;
+    }
+
+    @Override
+    public void update() {
+        setComboboxKategorie(kategorieComboBox, panelHandler.getKategorieListe());
+        setComboboxGenre(genreComboBox, panelHandler.getGenreListe());
     }
 }

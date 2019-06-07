@@ -9,7 +9,6 @@ import de.swt2bib.ui.PanelHandler;
  */
 public class OptionPanel extends ElternPanel {
 
-
     /**
      * Creates new form OptionPanel
      */
@@ -101,4 +100,9 @@ public class OptionPanel extends ElternPanel {
     private javax.swing.JTextField sucheField;
     private javax.swing.JButton uebernehmenButton;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update() {
+        //Sprache ändern
+    }
 }

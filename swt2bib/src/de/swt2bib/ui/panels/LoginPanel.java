@@ -5,7 +5,6 @@ import de.swt2bib.ui.PanelHandler;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
 
-
 /**
  *
  * @author root
@@ -106,10 +105,9 @@ public class LoginPanel extends ElternPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        if(!online){
+        if (!online) {
             einloggen();
-        }
-        else{
+        } else {
             try {
                 ausloggen();
             } catch (Exception e) {
@@ -117,7 +115,7 @@ public class LoginPanel extends ElternPanel {
                 meldungText.setText("Speichern der Sitzung nicht möglich");
             }
         }
-            
+
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void sucheFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucheFieldActionPerformed
@@ -137,10 +135,10 @@ public class LoginPanel extends ElternPanel {
     private javax.swing.JTextField sucheField;
     // End of variables declaration//GEN-END:variables
 
-    private void einloggen(){
+    private void einloggen() {
         String accountname = accountnameField.getText();
         String passwort = passwortField.getText();
-        if(panelHandler.login(accountname, passwort)){
+        if (panelHandler.login(accountname, passwort)) {
             meldungText.setText("Erfolgreich eingeloggt.");
             accountnameField.setEnabled(false);
             passwortField.setEnabled(false);
@@ -148,12 +146,12 @@ public class LoginPanel extends ElternPanel {
             online = true;
             panelHandler.panelUnsichtbar();
             panelHandler.getSuchePanel().setVisible(true);
-        }else{
+        } else {
             meldungText.setText("Accountname oder Passwort falsch.");
         }
     }
-    
-    private void ausloggen() throws IOException, ConnectionError{
+
+    private void ausloggen() throws IOException, ConnectionError {
         panelHandler.ausloggen();
         meldungText.setText("Erfolgreich ausgeloggt.");
         loginButton.setText("Login");
@@ -161,5 +159,8 @@ public class LoginPanel extends ElternPanel {
         passwortField.setEnabled(true);
         online = false;
     }
-    
+
+    @Override
+    public void update() {
+    }
 }

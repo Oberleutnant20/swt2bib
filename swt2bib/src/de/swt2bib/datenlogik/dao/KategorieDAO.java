@@ -2,7 +2,7 @@ package de.swt2bib.datenlogik.dao;
 
 import de.swt2bib.datenlogik.Database;
 import de.swt2bib.datenlogik.idao.IKategorieDAO;
-import de.swt2bib.fachlogik.kategorieverwaltung.Kategorie;
+import de.swt2bib.datenlogik.dto.Kategorie;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
 import java.sql.Connection;
@@ -59,5 +59,4 @@ public class KategorieDAO extends ElternDAO implements IKategorieDAO {
             throw new ConnectionError();
         }
     }
-
 }
