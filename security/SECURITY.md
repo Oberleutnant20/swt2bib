@@ -1,4 +1,4 @@
-# [English version(englische Version)](https://github.com/Oberleutnant20/swt2bib/blob/master/security/SECURITY_en.md)
+#### [English version(englische Version)](https://github.com/Oberleutnant20/swt2bib/blob/master/security/SECURITY_en.md)
 
 # Sicherheitsrichtlinie
 
