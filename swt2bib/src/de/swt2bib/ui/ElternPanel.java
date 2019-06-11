@@ -4,13 +4,18 @@ package de.swt2bib.ui;
  *
  * @author root
  */
-public class ElternPanel extends javax.swing.JPanel {
+public abstract class ElternPanel extends javax.swing.JPanel {
 
-    public PanelHandler panelHandler;
-    
-    public ElternPanel(final PanelHandler panelHandler) {
+    public final PanelHandler panelHandler;
+
+    /**
+     * Creates new form ElternPanel
+     */
+    public ElternPanel(PanelHandler panelHandler) {
         this.panelHandler = panelHandler;
     }
+
+    public abstract void update();
 
     /**
      * This method is called from within the constructor to initialize the form.

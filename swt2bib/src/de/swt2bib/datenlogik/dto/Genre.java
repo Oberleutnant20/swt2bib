@@ -1,13 +1,14 @@
-package de.swt2bib.fachlogik.genreverwaltung;
+package de.swt2bib.datenlogik.dto;
+
+import java.io.Serializable;
 
 /**
  *
- * @author TODO - Author
+ * @author root
  */
-public class Genre {
+public class Genre implements Serializable {
 
     private int id;
-    private String bezeichnung;
 
     public int getId() {
         return id;
@@ -16,9 +17,10 @@ public class Genre {
     public void setId(int id) {
         this.id = id;
     }
+    private String bezeichnung;
 
     public Genre(int id, String bezeichnung) {
-        this.id=id;
+        this.id = id;
         this.bezeichnung = bezeichnung;
     }
 

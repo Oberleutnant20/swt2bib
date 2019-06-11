@@ -1,11 +1,10 @@
 package de.swt2bib.ui.panels;
 
-import de.swt2bib.fachlogik.historyverwaltung.History;
-import de.swt2bib.fachlogik.kategorieverwaltung.Kategorie;
-import de.swt2bib.fachlogik.medienverwaltung.Medien;
+import de.swt2bib.datenlogik.dto.History;
+import de.swt2bib.datenlogik.dto.Kategorie;
+import de.swt2bib.datenlogik.dto.Medien;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -17,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class HistoryPanel extends ElternPanel {
 
-    ArrayList<History> historyListe;
+    List<History> historyListe;
 
     /**
      * Creates new form HistoryPanel
@@ -131,11 +130,11 @@ public class HistoryPanel extends ElternPanel {
     }//GEN-LAST:event_sucheFieldActionPerformed
 
     private void auswaehlenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_auswaehlenButtonActionPerformed
-       try {
+        try {
             panelHandler.getSelectPanel().setMedium(getMediumfromHistoryIndices(getListSelections()));
             panelHandler.panelUnsichtbar();
             panelHandler.getUi().add(panelHandler.getSelectPanel());
-            if(panelHandler.getAktuellerUser().isMitarbeiter()){
+            if (panelHandler.getAktuellerUser().isMitarbeiter()) {
                 panelHandler.getSelectPanel().setMitarbeiter();
             }
             panelHandler.getSelectPanel().setVisible(true);
@@ -144,28 +143,27 @@ public class HistoryPanel extends ElternPanel {
     }//GEN-LAST:event_auswaehlenButtonActionPerformed
 
     private void historysuchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historysuchFieldActionPerformed
-        setSearchKategorie(kategorieComboBox.getSelectedItem()+"");
+        setSearchKategorie(kategorieComboBox.getSelectedItem() + "");
     }//GEN-LAST:event_historysuchFieldActionPerformed
 
     private void kategorieComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kategorieComboBoxActionPerformed
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         String text = kategorieComboBox.getItemAt(0);
         int selectedID = -1;
         panelHandler.getKategorieListe();
-        
         for (int i = 0; i < panelHandler.getKategorieListe().size(); i++) {
-            if(panelHandler.getKategorieListe().get(i).getBezeichnung().equals(text))
-                selectedID=(int) panelHandler.getKategorieListe().get(i).getId();
+            if (panelHandler.getKategorieListe().get(i).getBezeichnung().equals(text)) {
+                selectedID = (int) panelHandler.getKategorieListe().get(i).getId();
+            }
         }
-        
         for (int i = model.getRowCount() - 1; i > -1; i--) {
             model.removeRow(i);
         }
         for (int i = 0; i < historyListe.size(); i++) {
-            if(historyListe.get(i).getKategorieid()==selectedID)
-             model.addRow(new Object[]{historyListe.get(i).getId()});    
+            if (historyListe.get(i).getKategorieid() == selectedID) {
+                model.addRow(new Object[]{historyListe.get(i).getId()});
+            }
         }
-        
     }//GEN-LAST:event_kategorieComboBoxActionPerformed
 
 
@@ -179,77 +177,86 @@ public class HistoryPanel extends ElternPanel {
     private javax.swing.JTextField sucheField;
     // End of variables declaration//GEN-END:variables
 
-    public void setUserHistory(ArrayList<History> history) {
-       historyListe = history;
-    }
-    
     private Medien getMediumfromHistoryIndices(int position) {
-		History selected = null;
-                Medien medium = null;
-		selected = historyListe.get(position);
-                medium = panelHandler.mapHistoryAndMedium(selected);
-		return medium;
-	}
-    
-    private int getListSelections() {
-	int[] selected = jTable1.getSelectedRows();
-	for (int i = 0; i < selected.length; i++) {
-		selected[i] = jTable1.convertRowIndexToModel(selected[i]);
-	}
-	return selected[0];
+        History selected = null;
+        Medien medium = null;
+        selected = historyListe.get(position);
+        medium = panelHandler.mapHistoryAndMedium(selected);
+        return medium;
     }
-    
-    private void setComboboxKategorie(JComboBox combobox,List<Kategorie> list){
+
+    private int getListSelections() {
+        int[] selected = jTable1.getSelectedRows();
+        for (int i = 0; i < selected.length; i++) {
+            selected[i] = jTable1.convertRowIndexToModel(selected[i]);
+        }
+        return selected[0];
+    }
+
+    private void setComboboxKategorie(JComboBox combobox, List<Kategorie> list) {
         String[] tmp = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
             tmp[i] = list.get(i).getBezeichnung();
-        }        
+        }
         combobox.setModel(new DefaultComboBoxModel(tmp));
     }
 
     private void setSearchKategorie(String kategorie) {
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
         for (int i = model.getRowCount() - 1; i > -1; i--) {
             model.removeRow(i);
         }
         int kategorieid = -1;
         for (int i = 0; i < panelHandler.getKategorieListe().size(); i++) {
-         if(panelHandler.getKategorieListe().get(i).getBezeichnung().equals(kategorie))   
-             kategorieid=(int) panelHandler.getKategorieListe().get(i).getId();
+            if (panelHandler.getKategorieListe().get(i).getBezeichnung().equals(kategorie)) {
+                kategorieid = (int) panelHandler.getKategorieListe().get(i).getId();
+            }
         }
-                        
+
         for (int i = 0; i < historyListe.size(); i++) {
-            if(historyListe.get(i).getKategorieid()==kategorieid)
-             model.addRow(addObject(i));    
+            if (historyListe.get(i).getKategorieid() == kategorieid) {
+                model.addRow(addObject(i));
+            }
         }
     }
 
     private Object[] addObject(int i) {
         String medienName = "";
-        
+
         for (int j = 0; j < panelHandler.returnMedien().size(); j++) {
-            if(historyListe.get(i).getMedienid() == panelHandler.returnMedien().get(j).getId())
+            if (historyListe.get(i).getMedienid() == panelHandler.returnMedien().get(j).getId()) {
                 medienName = panelHandler.returnMedien().get(j).getName();
+            }
         }
-        
+
         String kategorieName = "";
-        
+
         for (int j = 0; j < panelHandler.getKategorieListe().size(); j++) {
-            if(historyListe.get(i).getKategorieid() == panelHandler.getKategorieListe().get(j).getId())
+            if (historyListe.get(i).getKategorieid() == panelHandler.getKategorieListe().get(j).getId()) {
                 medienName = panelHandler.getKategorieListe().get(j).getName();
+            }
         }
-        
-        return new Object[]{historyListe.get(i).getId(),panelHandler.getAktuellerUser().getUsername(),medienName,kategorieName};
+
+        return new Object[]{historyListe.get(i).getId(), panelHandler.getAktuellerUser().getUsername(), medienName, kategorieName};
     }
 
     public void fillTable() {
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         for (int i = model.getRowCount() - 1; i > -1; i--) {
             model.removeRow(i);
         }
         for (int i = 0; i < historyListe.size(); i++) {
-          model.addRow(addObject(i));  
+            model.addRow(addObject(i));
+        }
+    }
+
+    @Override
+    public void update() {
+        historyListe = panelHandler.getHistory();
+        setComboboxKategorie(kategorieComboBox, panelHandler.getKategorieListe());
+        if (historyListe != null) {
+            fillTable();
         }
     }
 }

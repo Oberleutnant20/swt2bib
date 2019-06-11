@@ -1,20 +1,21 @@
-package de.swt2bib.fachlogik.ausleihverwaltung;
+package de.swt2bib.datenlogik.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
- * @author TODO - Author
+ * @author root
  */
-public class Ausleihe {
-    
+public class Ausleihe implements Serializable {
+
     private long id;
     private long medienid;
     private Date date;
     private int userid;
     private long kategorieid;
 
-    public Ausleihe(long id,long medienid, Date date, int userid, long kategorieid) {
+    public Ausleihe(long id, long medienid, Date date, int userid, long kategorieid) {
         this.id = id;
         this.medienid = medienid;
         this.date = date;
@@ -25,7 +26,7 @@ public class Ausleihe {
     public long getId() {
         return id;
     }
-    
+
     public long getMedienid() {
         return medienid;
     }
@@ -45,7 +46,7 @@ public class Ausleihe {
     public void setId(long id) {
         this.id = id;
     }
-    
+
     public void setMedienid(long medienid) {
         this.medienid = medienid;
     }
@@ -61,5 +62,4 @@ public class Ausleihe {
     public void setUserid(int userid) {
         this.userid = userid;
     }
-    
 }

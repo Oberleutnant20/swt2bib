@@ -1,6 +1,6 @@
 package de.swt2bib.ui.panels;
 
-import de.swt2bib.fachlogik.accountverwaltung.Account;
+import de.swt2bib.datenlogik.dto.Account;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
 
@@ -13,10 +13,9 @@ public class AccountBearbeitenPanel extends ElternPanel {
     /**
      * Creates new form AccountBearbeiten
      */
-    
     private Account account;
     private boolean neu;
-            
+
     /**
      *
      * @param panelHandler
@@ -203,11 +202,11 @@ public class AccountBearbeitenPanel extends ElternPanel {
     }//GEN-LAST:event_sucheFieldActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if(!plzField.getText().matches("[0-9]{5}")){
+        if (!plzField.getText().matches("[0-9]{5}")) {
             meldungText.setText("PLZ ist ungültig.");
             return;
         }
-        if(passwortField.getText().equals(checkPasswortField.getText())){
+        if (passwortField.getText().equals(checkPasswortField.getText())) {
             String hausnummer = hausnummerField.getText();
             String name = nameField.getText();
             int plz = Integer.parseInt(plzField.getText());
@@ -216,10 +215,9 @@ public class AccountBearbeitenPanel extends ElternPanel {
             String vorname = vornameField.getText();
             String passwort = passwortField.getText();
             boolean mitarbeiter = mitarbeiterCheckBox.isSelected();
-            save(account.getUserid(),hausnummer, name, plz, stadt, strasse, vorname, passwort,mitarbeiter);
+            save(account.getUserid(), hausnummer, name, plz, stadt, strasse, vorname, passwort, mitarbeiter);
             meldungText.setText("Änderungen wurden übernommen.");
-        }
-        else{
+        } else {
             meldungText.setText("Passwort stimmt nicht überein.");
         }
     }//GEN-LAST:event_saveButtonActionPerformed
@@ -250,40 +248,56 @@ public class AccountBearbeitenPanel extends ElternPanel {
 
     public void setAccount(Account a) {
         neu = false;
-        account =a;
-        if(a==null)
+        account = a;
+        if (a == null) {
             System.out.println("null");
+        }
         hausnummerField.setText(a.getHausnummer());
         nameField.setText(a.getNachname());
-        plzField.setText(""+a.getPlz());
+        plzField.setText("" + a.getPlz());
         stadtField.setText(a.getOrt());
         strasseField.setText(a.getStrasse());
         vornameField.setText(a.getVorname());
         mitarbeiterCheckBox.setSelected(a.isMitarbeiter());
     }
-        
-    public void save(int id,String hausnummer, String name, int plz, String ort, String strasse, String vorname,String  passwort, boolean mitarbeiter){
-        if(!neu)
-        panelHandler.saveAccountChange(account.getUserid(),hausnummer, name ,plz ,ort, strasse,vorname,passwort, mitarbeiter,account.getUsername());
-        else
-          panelHandler.saveAccount(account.getUserid(),hausnummer, name ,plz , strasse,ort,vorname,passwort, mitarbeiter,account.getUsername());  
+
+    public void save(int id, String hausnummer, String name, int plz, String ort, String strasse, String vorname, String passwort, boolean mitarbeiter) {
+        if (!neu) {
+            panelHandler.saveAccountChange(account.getUserid(), hausnummer, name, plz, ort, strasse, vorname, passwort, mitarbeiter, account.getUsername());
+        } else {
+            panelHandler.saveAccount(account.getUserid(), hausnummer, name, plz, strasse, ort, vorname, passwort, mitarbeiter, account.getUsername());
+        }
     }
-    
-    public void bearbeitenMitarbeiter(){
+
+    public void bearbeitenMitarbeiter() {
         mitarbeiterCheckBox.setEnabled(true);
     }
 
     void setNewAccount(Account a) {
         neu = true;
-        account =a;
-        if(a==null)
+        account = a;
+        if (a == null) {
             System.out.println("null");
+        }
         hausnummerField.setText(a.getHausnummer());
         nameField.setText(a.getNachname());
-        plzField.setText(""+a.getPlz());
+        plzField.setText("" + a.getPlz());
         stadtField.setText(a.getOrt());
         strasseField.setText(a.getStrasse());
         vornameField.setText(a.getVorname());
         mitarbeiterCheckBox.setSelected(a.isMitarbeiter());
+    }
+
+    @Override
+    public void update() {
+        if (account != null) {
+            hausnummerField.setText(account.getHausnummer());
+            nameField.setText(account.getNachname());
+            plzField.setText("" + account.getPlz());
+            stadtField.setText(account.getOrt());
+            strasseField.setText(account.getStrasse());
+            vornameField.setText(account.getVorname());
+            mitarbeiterCheckBox.setSelected(account.isMitarbeiter());
+        }
     }
 }
