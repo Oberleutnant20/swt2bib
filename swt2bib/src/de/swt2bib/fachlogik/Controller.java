@@ -10,10 +10,10 @@ import de.swt2bib.fachlogik.ausleihverwaltung.Ausleiheverwaltung;
 import de.swt2bib.fachlogik.genreverwaltung.Genreverwaltung;
 import de.swt2bib.fachlogik.historyverwaltung.Historyverwaltung;
 import de.swt2bib.fachlogik.medienverwaltung.Medienverwaltung;
+import de.swt2bib.fachlogik.crypt.Password;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
 import de.swt2bib.info.exceptions.ConnectionError;
-import de.swt2bib.fachlogik.crypt.Password;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author TODO - Author
+ * @author root
  */
 public class Controller {
 
@@ -271,7 +271,7 @@ public class Controller {
         }
     }
     
-    public String generatePwHash(String passwd){
+    private String generatePwHash(String passwd){
         String ret = null;
         try {
             ret = this.passwd.getSHA512(passwd);

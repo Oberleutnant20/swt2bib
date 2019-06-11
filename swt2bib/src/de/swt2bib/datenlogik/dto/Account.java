@@ -1,5 +1,6 @@
 package de.swt2bib.datenlogik.dto;
 
+import de.swt2bib.fachlogik.crypt.Password;
 import java.io.Serializable;
 
 /**
@@ -18,6 +19,7 @@ public class Account implements Serializable {
     private String strasse;
     private String hausnummer;
     private String ort;
+    private Password passwd;
 
     public Account(String username, String passwort, boolean mitarbeiter, int userid, String vorname, String nachname, int plz, String strasse, String hausnummer, String ort) {
         this.username = username;

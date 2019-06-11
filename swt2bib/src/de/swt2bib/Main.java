@@ -16,7 +16,7 @@ import de.swt2bib.fachlogik.medienverwaltung.Medienverwaltung;
 
 /**
  *
- * @author TODO - Author
+ * @author root
  */
 public class Main {
     public static void main(String[] args) {

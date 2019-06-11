@@ -7,7 +7,7 @@ import de.swt2bib.datenlogik.dto.History;
 import de.swt2bib.datenlogik.dto.Kategorie;
 import de.swt2bib.datenlogik.dto.Medien;
 import de.swt2bib.fachlogik.Controller;
-import de.swt2bib.Logger;
+import de.swt2bib.fachlogik.crypt.Password;
 import de.swt2bib.ui.panels.AccountBearbeitenPanel;
 import de.swt2bib.ui.panels.AccountsBearbeitenPanel;
 import de.swt2bib.ui.panels.AusleihenBearbeitenPanel;
@@ -19,8 +19,12 @@ import de.swt2bib.ui.panels.SelectPanel;
 import de.swt2bib.ui.panels.SuchePanel;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -44,6 +48,7 @@ public class PanelHandler {
     private Account aktuellerUser;
     private List<Genre> genreListe;
     private List<Kategorie> kategorieListe;
+    private Password passwd = new Password();
 
     public PanelHandler(Controller controller, List<Genre> genreListe, List<Kategorie> kategorieListe) {
         ui = new UI(genreListe, kategorieListe, this);
@@ -111,7 +116,8 @@ public class PanelHandler {
     }
 
     public void saveAccountChange(int id, String hausnummer, String name, int plz, String ort, String strasse, String vorname, String passwort, boolean mitarbeiter, String accountname) {
-        Account a = new Account(accountname, passwort, mitarbeiter, id, vorname, name, plz, strasse, hausnummer, ort);
+        String tmppw = generatePwHash(passwort);
+        Account a = new Account(accountname, tmppw, mitarbeiter, id, vorname, name, plz, strasse, hausnummer, ort);
         controller.saveAccountChange(a);
     }
 
@@ -124,7 +130,8 @@ public class PanelHandler {
     }
 
     public void saveAccount(int id, String hausnummer, String name, int plz, String ort, String strasse, String vorname, String passwort, boolean mitarbeiter, String accountname) {
-        controller.saveAccount(new Account(accountname, passwort, mitarbeiter, id, vorname, name, plz, strasse, hausnummer, ort));
+        String tmppw = generatePwHash(passwort);
+        controller.saveAccount(new Account(accountname, tmppw, mitarbeiter, id, vorname, name, plz, strasse, hausnummer, ort));
     }
 
     public List<Ausleihe> getAusleihe() {
@@ -255,10 +262,10 @@ public class PanelHandler {
         for (Medien medien : controller.getAllMedien()) {
             if (medien.getId() == medienId) {
                 verfuegbare = medien.getAnzahl();
-                Logger.info(this, "gefunden");
+                de.swt2bib.Logger.info(this, "gefunden");
             }
         }
-        Logger.info(this, verfuegbare + "verfügbare gefunden");
+        de.swt2bib.Logger.info(this, verfuegbare + "verfügbare gefunden");
         for (Ausleihe ausleihe : controller.getAllAusleihenListe()) {
             if (ausleihe.getMedienid() == medienId) {
                 verfuegbare--;
@@ -268,7 +275,19 @@ public class PanelHandler {
     }
 
     public List<Medien> getMedienliste() {
-        Logger.info(this, "Medienliste gezogen");
+        de.swt2bib.Logger.info(this, "Medienliste gezogen");
         return controller.getAllMedien();
+    }
+    
+    private String generatePwHash(String passwd){
+        String ret = null;
+        try {
+            ret = this.passwd.getSHA512(passwd);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
     }
 }

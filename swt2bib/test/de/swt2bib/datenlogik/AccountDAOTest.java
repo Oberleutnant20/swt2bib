@@ -11,22 +11,23 @@ import org.mockito.MockitoAnnotations;
  * @author root
  */
 public class AccountDAOTest {
+
     AccountDAO sut;
-    
+
     public AccountDAOTest() {
     }
-    
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         sut = new AccountDAO();
     }
-    
+
     @Test
-    public void testLadeDb() throws Exception{
+    public void testLadeDb() throws Exception {
         //GIVEN
         //WHEN
         //THEN
-        assertTrue(sut.laden()!=null);
+        assertTrue(sut.laden() != null);
     }
 }
