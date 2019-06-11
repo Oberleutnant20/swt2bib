@@ -1,4 +1,4 @@
-#### [German version(deutsche Version)](https://github.com/Oberleutnant20/HSQLDB-Properties-Template/blob/master/docs/CONTRIBUTING.md)
+#### [German version(deutsche Version)](https://github.com/Oberleutnant20/swt2bib/blob/master/docs/CONTRIBUTING.md)
 #### English version(englische Version)
 
 
@@ -6,9 +6,9 @@
 
 #### **Did you find a bug?**
 
-* **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/Oberleutnant20/HSQLDB-Template/issues).
+* **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/Oberleutnant20/swt2bib/issues).
 
-* If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/Oberleutnant20/HSQLDB-Template/issues/new). Be sure to include a **title and clear description**, as much relevant information as possible,  demonstrating the expected behavior that is not occurring.
+* If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/Oberleutnant20/swt2bib/issues/new). Be sure to include a **title and clear description**, as much relevant information as possible,  demonstrating the expected behavior that is not occurring.
 
 #### **Did you write a patch that fixes a bug?**
 
@@ -28,7 +28,7 @@ Changes that are cosmetic in nature and do not add anything substantial to the s
 
 #### **Do you have questions about the source code?**
 
-* Ask any question about how to use? Than meet us on our Teamspeak 3(ts3server://ts3.unique-players.de?port=9987&addbookmark=Unique-Players.de) or in our [Forum](http://unique-players.de).
+* Ask any question about how to use? Than meet us on our Teamspeak 3(ts3server://ts3.unique-players.de?port=9987&addbookmark=Unique-Players.de) or in our [Forum](https://unique-players.de).
 
 #### **Coding conventions**
 
@@ -44,6 +44,4 @@ Start reading our code and you'll get the hang of it. We optimize for readabilit
   
   * This is open source software. Consider the people who will read your code, and make it look nice for them. It's sort of like driving a car: Perhaps you love doing donuts when you're alone, but with passengers the goal is to make the ride as smooth as possible.
 
-Thanks! :heart: :heart: :heart:
-
-Tim aka. Oberleutnant20
+Thanks!
