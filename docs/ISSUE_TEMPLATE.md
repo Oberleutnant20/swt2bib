@@ -1,5 +1,5 @@
-### expected behavior(Erwartetes Verhalten)
+### expected behavior (Erwartetes Verhalten)
 
-### actual behavior(tatsächliches Verhalten)
+### actual behavior (tatsächliches Verhalten)
 
-### Steps to reproduce(Schritte zum Reproduzieren)
+### Steps to reproduce (Schritte zum Reproduzieren)
