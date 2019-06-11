@@ -3,6 +3,7 @@ package de.swt2bib.ui.panels;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
 import de.swt2bib.info.exceptions.ConnectionError;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 /**
@@ -41,6 +42,11 @@ public class LoginPanel extends ElternPanel {
         accountnameField.setText("Accountname");
 
         passwortField.setText("Passwort");
+        passwortField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                passwortFieldKeyPressed(evt);
+            }
+        });
 
         loginButton.setText("Login");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
@@ -105,17 +111,7 @@ public class LoginPanel extends ElternPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        if (!online) {
-            einloggen();
-        } else {
-            try {
-                ausloggen();
-            } catch (Exception e) {
-                System.err.println(e);
-                meldungText.setText("Speichern der Sitzung nicht möglich");
-            }
-        }
-
+        login();
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void sucheFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucheFieldActionPerformed
@@ -123,6 +119,12 @@ public class LoginPanel extends ElternPanel {
         panelHandler.getSuchePanel().setSearchTitel(sucheField.getText());
         panelHandler.getSuchePanel().setVisible(true);
     }//GEN-LAST:event_sucheFieldActionPerformed
+
+    private void passwortFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwortFieldKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            login();
+        }
+    }//GEN-LAST:event_passwortFieldKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -162,5 +164,18 @@ public class LoginPanel extends ElternPanel {
 
     @Override
     public void update() {
+    }
+
+    private void login() {
+        if (!online) {
+            einloggen();
+        } else {
+            try {
+                ausloggen();
+            } catch (Exception e) {
+                System.err.println(e);
+                meldungText.setText("Speichern der Sitzung nicht möglich");
+            }
+        }
     }
 }
