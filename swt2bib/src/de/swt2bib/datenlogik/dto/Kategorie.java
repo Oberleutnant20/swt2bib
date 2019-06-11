@@ -1,10 +1,13 @@
-package de.swt2bib.fachlogik.kategorieverwaltung;
+package de.swt2bib.datenlogik.dto;
+
+import java.io.Serializable;
 
 /**
  *
- * @author TODO - Author
+ * @author root
  */
-public class Kategorie {
+public class Kategorie implements Serializable {
+
     private long id;
     private String name;
     private String bezeichnung;
@@ -38,5 +41,4 @@ public class Kategorie {
     public void setName(String name) {
         this.name = name;
     }
-    
 }

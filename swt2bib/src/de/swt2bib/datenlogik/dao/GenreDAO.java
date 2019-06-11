@@ -2,7 +2,7 @@ package de.swt2bib.datenlogik.dao;
 
 import de.swt2bib.datenlogik.Database;
 import de.swt2bib.datenlogik.idao.IGenreDAO;
-import de.swt2bib.fachlogik.genreverwaltung.Genre;
+import de.swt2bib.datenlogik.dto.Genre;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
 import java.sql.Connection;
@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Tim Lorse
  */
-public class GenreDAO implements IGenreDAO {
+public class GenreDAO extends ElternDAO implements IGenreDAO {
 
     private final Database db = new Database();
     private final Connection con = db.connect_mysql_schema();
@@ -59,6 +59,5 @@ public class GenreDAO implements IGenreDAO {
             throw new ConnectionError();
         }
     }
-
 }
 

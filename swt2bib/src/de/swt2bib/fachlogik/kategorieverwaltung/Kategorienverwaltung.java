@@ -1,6 +1,8 @@
 package de.swt2bib.fachlogik.kategorieverwaltung;
 
+import de.swt2bib.datenlogik.dto.Kategorie;
 import de.swt2bib.datenlogik.idao.IKategorieDAO;
+import de.swt2bib.fachlogik.ElternVerwaltung;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,8 +12,8 @@ import java.util.List;
  *
  * @author root
  */
-public class Kategorienverwaltung {
-    
+public class Kategorienverwaltung extends ElternVerwaltung {
+
     private ArrayList<Kategorie> kategorieListe;
     private ArrayList<Kategorie> kategorieListeRef;
     private IKategorieDAO kategorieDAO;
@@ -24,7 +26,7 @@ public class Kategorienverwaltung {
 
     public void speichern() throws IOException, ConnectionError {
         List<Kategorie> liste = new ArrayList<>();
-        if(kategorieListe.size() > kategorieListeRef.size()){
+        if (kategorieListe.size() > kategorieListeRef.size()) {
             liste = kategorieListe.subList(kategorieListeRef.size(), kategorieListe.size());
         }
         kategorieDAO.speichern(liste);
@@ -33,6 +35,7 @@ public class Kategorienverwaltung {
     public void laden() {
         kategorieListe.clear();
         kategorieListeRef.clear();
+        de.swt2bib.Logger.debug(this, "laden");
         try {
             List<Kategorie> liste = kategorieDAO.laden();
             liste.forEach((kategorie) -> {
@@ -48,12 +51,14 @@ public class Kategorienverwaltung {
         if (!kategorieListe.add(kategorie)) {
             String error = "Ausleihe gibt es bereits.";
         }
+        notifyPanels();
     }
 
     public void delete(Kategorie kategorie) {
         if (!kategorieListe.remove(kategorie)) {
             String error = "Ausleihe gibt es nicht.";
         }
+        notifyPanels();
     }
 
     public List<Kategorie> get() {

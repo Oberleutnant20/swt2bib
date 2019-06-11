@@ -2,14 +2,13 @@ package de.swt2bib.datenlogik.dao;
 
 import de.swt2bib.datenlogik.Database;
 import de.swt2bib.datenlogik.idao.IAusleiheDAO;
-import de.swt2bib.fachlogik.ausleihverwaltung.Ausleihe;
+import de.swt2bib.datenlogik.dto.Ausleihe;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author Tim Lorse
  */
-public class AusleiheDAO implements IAusleiheDAO {
+public class AusleiheDAO extends ElternDAO implements IAusleiheDAO {
 
     private final Database db = new Database();
     private final Connection con = db.connect_mysql_schema();
@@ -56,9 +55,8 @@ public class AusleiheDAO implements IAusleiheDAO {
             for (Ausleihe ausleihe : ausleiheListe) {
                 try {
                     String pattern = "YYYY-MM-DD";
-                    String mysqlDateString = new SimpleDateFormat(pattern).format(ausleihe.getDate());
                     PreparedStatement ptsm = con.prepareStatement("INSERT INTO Ausleihe(a_DATE, u_ID, m_id, km_id) "
-                            + "VALUES('" + mysqlDateString + "', " + ausleihe.getUserid() + ", " + ausleihe.getMedienid() + ", " + ausleihe.getKategorieid() + ");");
+                            + "VALUES('" + new java.sql.Date(ausleihe.getDate().getTime()) + "', " + ausleihe.getUserid() + ", " + ausleihe.getMedienid() + ", " + ausleihe.getKategorieid() + ");");
 
                     ptsm.execute();
                 } catch (SQLException ex) {

@@ -2,7 +2,7 @@ package de.swt2bib.datenlogik.dao;
 
 import de.swt2bib.datenlogik.Database;
 import de.swt2bib.datenlogik.idao.IHistoryDAO;
-import de.swt2bib.fachlogik.historyverwaltung.History;
+import de.swt2bib.datenlogik.dto.History;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
 import java.sql.Connection;
@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Tim Lorse
  */
-public class HistoryDAO implements IHistoryDAO {
+public class HistoryDAO extends ElternDAO implements IHistoryDAO {
 
     private final Database db = new Database();
     private final Connection con = db.connect_mysql_schema();
@@ -63,5 +63,4 @@ public class HistoryDAO implements IHistoryDAO {
             throw new ConnectionError();
         }
     }
-
 }

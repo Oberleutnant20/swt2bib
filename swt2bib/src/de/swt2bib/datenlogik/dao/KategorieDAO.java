@@ -2,7 +2,7 @@ package de.swt2bib.datenlogik.dao;
 
 import de.swt2bib.datenlogik.Database;
 import de.swt2bib.datenlogik.idao.IKategorieDAO;
-import de.swt2bib.fachlogik.kategorieverwaltung.Kategorie;
+import de.swt2bib.datenlogik.dto.Kategorie;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
 import java.sql.Connection;
@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Tim Lorse
  */
-public class KategorieDAO implements IKategorieDAO {
+public class KategorieDAO extends ElternDAO implements IKategorieDAO {
 
     private final Database db = new Database();
     private final Connection con = db.connect_mysql_schema();
@@ -59,5 +59,4 @@ public class KategorieDAO implements IKategorieDAO {
             throw new ConnectionError();
         }
     }
-
 }

@@ -1,10 +1,13 @@
-package de.swt2bib.fachlogik.historyverwaltung;
+package de.swt2bib.datenlogik.dto;
+
+import java.io.Serializable;
 
 /**
  *
- * @author TODO - Author
+ * @author root
  */
-public class History {
+public class History implements Serializable {
+
     long id;
     int userid;
     long medienid;
@@ -17,8 +20,6 @@ public class History {
         this.kategorieid = kategorieid;
     }
 
-    
-    
     public long getKategorieid() {
         return kategorieid;
     }
@@ -50,5 +51,4 @@ public class History {
     public void setKategorieid(long kategorieid) {
         this.kategorieid = kategorieid;
     }
-    
 }

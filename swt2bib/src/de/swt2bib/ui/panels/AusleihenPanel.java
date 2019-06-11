@@ -1,10 +1,11 @@
 package de.swt2bib.ui.panels;
 
-import de.swt2bib.fachlogik.accountverwaltung.Account;
-import de.swt2bib.fachlogik.ausleihverwaltung.Ausleihe;
+import de.swt2bib.datenlogik.dto.Account;
+import de.swt2bib.datenlogik.dto.Ausleihe;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -13,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class AusleihenPanel extends ElternPanel {
 
-    ArrayList<Ausleihe> ausleiheListe;
+    List<Ausleihe> ausleiheUserListe;
     Account account;
 
     /**
@@ -111,59 +112,65 @@ public class AusleihenPanel extends ElternPanel {
     private javax.swing.JTextField sucheField;
     // End of variables declaration//GEN-END:variables
 
-    public void setUserAusleihe(ArrayList<Ausleihe> ausleihe) {
-        ausleiheListe = ausleihe;
-    }
-    
     private Ausleihe getAusleihefromIndices(int position) {
-		Ausleihe selected = null;
-		selected = ausleiheListe.get(position);
-		return selected;
-	}
-    
-    private int getListSelections() {
-	int[] selected = jTable1.getSelectedRows();
-	for (int i = 0; i < selected.length; i++) {
-		selected[i] = jTable1.convertRowIndexToModel(selected[i]);
-	}
-	return selected[0];
+        Ausleihe selected = null;
+        selected = ausleiheUserListe.get(position);
+        return selected;
     }
-    
+
+    private int getListSelections() {
+        int[] selected = jTable1.getSelectedRows();
+        for (int i = 0; i < selected.length; i++) {
+            selected[i] = jTable1.convertRowIndexToModel(selected[i]);
+        }
+        return selected[0];
+    }
+
     public void fillTable() {
-        panelHandler.loadAusleihen();
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         for (int i = model.getRowCount() - 1; i > -1; i--) {
             model.removeRow(i);
         }
-        for (int i = 0; i < ausleiheListe.size(); i++) {
-            if(ausleiheListe.get(i).getUserid()==account.getUserid())
-             model.addRow(addObject(i));  
+        for (int i = 0; i < ausleiheUserListe.size(); i++) {
+            model.addRow(addObject(i));
         }
     }
-    
+
     private Object[] addObject(int i) {
         String medienName = "";
-        
         for (int j = 0; j < panelHandler.returnMedien().size(); j++) {
-            if(ausleiheListe.get(i).getMedienid() == panelHandler.returnMedien().get(j).getId())
+            if (ausleiheUserListe.get(i).getMedienid() == panelHandler.returnMedien().get(j).getId()) {
                 medienName = panelHandler.returnMedien().get(j).getName();
+            }
         }
-        
         String kategorieName = "";
-        
         for (int j = 0; j < panelHandler.getKategorieListe().size(); j++) {
-            if(ausleiheListe.get(i).getKategorieid() == panelHandler.getKategorieListe().get(j).getId())
+            if (ausleiheUserListe.get(i).getKategorieid() == panelHandler.getKategorieListe().get(j).getId()) {
                 medienName = panelHandler.getKategorieListe().get(j).getName();
+            }
         }
-        
-        return new Object[]{ausleiheListe.get(i).getId(),medienName,ausleiheListe.get(i).getDate(),panelHandler.getAktuellerUser().getUsername(),kategorieName};
+        return new Object[]{ausleiheUserListe.get(i).getId(), medienName, ausleiheUserListe.get(i).getDate(), panelHandler.getAktuellerUser().getUsername(), kategorieName};
     }
 
     public void setAccount(Account aktuellerUser) {
         account = aktuellerUser;
     }
 
-    public void setAusleihenListe(ArrayList<Ausleihe> allAusleihenListe) {
-        ausleiheListe = allAusleihenListe;
+    public void setAusleihenListe(List<Ausleihe> allAusleihenListe) {
+        ausleiheUserListe = allAusleihenListe;
+    }
+
+    @Override
+    public void update() {
+        account = panelHandler.getAktuellerUser();
+        if (account != null) {
+            ausleiheUserListe = new ArrayList<>();
+            for (int i = 0; i < panelHandler.getAusleihe().size(); i++) {
+                if (panelHandler.getAusleihe().get(i).getUserid() == account.getUserid()) {
+                    ausleiheUserListe.add(panelHandler.getAusleihe().get(i));
+                }
+            }
+            fillTable();
+        }
     }
 }

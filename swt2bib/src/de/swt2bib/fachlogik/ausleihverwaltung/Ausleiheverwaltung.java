@@ -1,6 +1,8 @@
 package de.swt2bib.fachlogik.ausleihverwaltung;
 
+import de.swt2bib.datenlogik.dto.Ausleihe;
 import de.swt2bib.datenlogik.idao.IAusleiheDAO;
+import de.swt2bib.fachlogik.ElternVerwaltung;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,8 +12,8 @@ import java.util.List;
  *
  * @author root
  */
-public class Ausleiheverwaltung {
-    
+public class Ausleiheverwaltung extends ElternVerwaltung {
+
     private ArrayList<Ausleihe> ausleiheListe;
     private ArrayList<Ausleihe> ausleiheListeRef;
     private ArrayList<Ausleihe> ausleiheListeUpdate;
@@ -28,7 +30,7 @@ public class Ausleiheverwaltung {
 
     public void speichern() throws IOException, ConnectionError {
         List<Ausleihe> liste = new ArrayList<>();
-        if(ausleiheListe.size() > ausleiheListeRef.size()){
+        if (ausleiheListe.size() > ausleiheListeRef.size()) {
             liste = ausleiheListe.subList(ausleiheListeRef.size(), ausleiheListe.size());
         }
         ausleiheDAO.speichern(liste);
@@ -38,6 +40,7 @@ public class Ausleiheverwaltung {
     public void laden() {
         ausleiheListe.clear();
         ausleiheListeRef.clear();
+        de.swt2bib.Logger.debug(this, "laden");
         try {
             List<Ausleihe> liste = ausleiheDAO.laden();
             for (Ausleihe ausleihe : liste) {
@@ -46,6 +49,7 @@ public class Ausleiheverwaltung {
             }
 
         } catch (Exception e) {
+            de.swt2bib.Logger.error(this, "laden Error");
         }
     }
 
@@ -53,18 +57,23 @@ public class Ausleiheverwaltung {
         if (!ausleiheListe.add(ausleihe)) {
             String error = "Ausleihe gibt es bereits.";
         }
+        notifyPanels();
     }
 
     public void delete(Ausleihe ausleihe) {
         if (!ausleiheListeDelete.add(ausleihe)) {
             String error = "Ausleihe gibt es nicht.";
+        } else {
+            ausleiheListe.remove(ausleihe);
+            notifyPanels();
         }
     }
-    
-    public void update(Ausleihe ausleihe){
+
+    public void update(Ausleihe ausleihe) {
         if (!ausleiheListeUpdate.add(ausleihe)) {
             String error = "Ausleihe gibt es nicht.";
         }
+        notifyPanels();
     }
 
     public ArrayList<Ausleihe> get() {
