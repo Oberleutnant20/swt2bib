@@ -10,7 +10,6 @@ import java.util.List;
  * @author Tim Lorse
  */
 public interface IGenreDAO {
-    List<Genre> laden() throws IOException, ConnectionError;
-    void speichern(List<Genre> GenreListe)  throws IOException, ConnectionError;
-    //void update(List<Genre> GenreListe) throws IOException, ConnectionError;
+    public List<Genre> laden() throws IOException, ConnectionError;
+    public void speichern(List<Genre> GenreListe)  throws IOException, ConnectionError;
 }

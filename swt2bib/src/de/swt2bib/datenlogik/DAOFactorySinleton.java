@@ -17,16 +17,20 @@ class DAOFactorySingleton {
     //Create an object of SingleObject
     private static DAOFactorySingleton instance = new DAOFactorySingleton();
 
-    //make the constructor private so that this class cannot be
-    //instantiated
-    private DAOFactorySingleton() {
-    }
-
-    //Get the only object available
+    /**
+     *
+     * @return eine Instanz von DAOFactorySingleton
+     */
     public static DAOFactorySingleton getInstance() {
         return instance;
     }
 
+    /**
+     * ElternDAO welche das richtige DAO zurück gibt.
+     *
+     * @param art Was für ein DAO benötigt wird
+     * @return richtiges DAO
+     */
     public ElternDAO getDAO(String art) {
         switch (art) {
             case "Account":

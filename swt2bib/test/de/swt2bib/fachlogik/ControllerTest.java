@@ -7,6 +7,7 @@ import de.swt2bib.fachlogik.crypt.Password;
 import de.swt2bib.fachlogik.genreverwaltung.Genreverwaltung;
 import de.swt2bib.fachlogik.historyverwaltung.Historyverwaltung;
 import de.swt2bib.fachlogik.kategorieverwaltung.Kategorienverwaltung;
+import de.swt2bib.fachlogik.languageverwaltung.Languageverwaltung;
 import de.swt2bib.fachlogik.medienverwaltung.Medienverwaltung;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -26,6 +27,10 @@ import org.mockito.MockitoAnnotations;
  */
 public class ControllerTest {
 
+    Password passwd = new Password();
+    
+    @Mock
+    Languageverwaltung languageverwaltung;
     @Mock
     Accountverwaltung accountverwaltung;
     @Mock
@@ -39,15 +44,14 @@ public class ControllerTest {
     @Mock
     Historyverwaltung historyverwaltung;
     Controller sut;
-    Password passwd = new Password();
-
+    
     public ControllerTest() {
     }
-
+    
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        sut = new Controller(accountverwaltung, medienverwaltung, ausleiheverwaltung, kategorienverwaltung, genreverwaltung, historyverwaltung);
+        sut = new Controller(languageverwaltung, accountverwaltung, medienverwaltung, ausleiheverwaltung, kategorienverwaltung, genreverwaltung, historyverwaltung);
     }
 
     @Test

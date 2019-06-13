@@ -1,5 +1,7 @@
 package de.swt2bib.ui;
 
+import java.util.Properties;
+
 /**
  *
  * @author root
@@ -10,12 +12,15 @@ public abstract class ElternPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form ElternPanel
+     * @param panelHandler Angabe Panelhandler
      */
     public ElternPanel(PanelHandler panelHandler) {
         this.panelHandler = panelHandler;
     }
 
     public abstract void update();
+
+    public abstract void updateLanguage(Properties props);
 
     /**
      * This method is called from within the constructor to initialize the form.

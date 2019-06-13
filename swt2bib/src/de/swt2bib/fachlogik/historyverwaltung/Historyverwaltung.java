@@ -14,25 +14,40 @@ import java.util.List;
  */
 public class Historyverwaltung extends ElternVerwaltung {
 
+    // Attribute
     private ArrayList<History> historyListe;
     private ArrayList<History> historyListeRef;
     private IHistoryDAO historyDAO;
 
+    /**
+     * Konstruktor für die History Verwaltung.
+     *
+     * @param historyDAO History Datenbankobjekt
+     */
     public Historyverwaltung(IHistoryDAO historyDAO) {
-        historyListe = new ArrayList<History>();
-        historyListeRef = new ArrayList<History>();
+        historyListe = new ArrayList<>();
+        historyListeRef = new ArrayList<>();
         this.historyDAO = historyDAO;
+        laden();
     }
 
+    /**
+     * Speichert eine Liste von Historys.
+     *
+     * @throws IOException IO Fehler
+     * @throws ConnectionError Datenbankverbindungsfehler
+     */
     public void speichern() throws IOException, ConnectionError {
         List<History> liste = new ArrayList<>();
         if (historyListe.size() > historyListeRef.size()) {
             liste = historyListe.subList(historyListeRef.size(), historyListe.size());
-            System.out.println("hm");
         }
         historyDAO.speichern(liste);
     }
 
+    /**
+     * Läd eine Liste von Historys.
+     */
     public void laden() {
         historyListe.clear();
         de.swt2bib.Logger.debug(this, "laden");
@@ -44,19 +59,30 @@ public class Historyverwaltung extends ElternVerwaltung {
             }
 
         } catch (Exception e) {
+            de.swt2bib.Logger.error(this, "laden");
         }
     }
 
+    /**
+     * Fügt der History liste eine Element hinzu.
+     *
+     * @param history Neues History Element
+     */
     public void add(History history) {
         if (!historyListe.add(history)) {
-            String error = "Ausleihe gibt es bereits.";
+            de.swt2bib.Logger.error(this, "History gibt es bereits.");
         }
         notifyPanels();
     }
 
+    /**
+     * löscht eine History Element.
+     *
+     * @param history History, welche gelöscht werden soll.
+     */
     public void delete(History history) {
         if (!historyListe.remove(history)) {
-            String error = "Ausleihe gibt es nicht.";
+            de.swt2bib.Logger.error(this, "History gibt es nicht.");
         }
         notifyPanels();
     }

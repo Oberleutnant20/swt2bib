@@ -1,9 +1,7 @@
 package de.swt2bib.ui;
 
-import de.swt2bib.datenlogik.dto.Genre;
-import de.swt2bib.datenlogik.dto.Kategorie;
+import de.swt2bib.Logger;
 import de.swt2bib.info.Informationen;
-import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -13,16 +11,14 @@ import javax.swing.JPanel;
  */
 public class UI extends javax.swing.JFrame {
 
-    List<Genre> genreListe;
-    List<Kategorie> kategorieListe;
+    // Attribute
     PanelHandler panelHandler;
 
     /**
      * Creates new form UI
+     * @param panelHandler Angabe Panelhandler
      */
-    public UI(List<Genre> genreListe, List<Kategorie> kategorieListe, PanelHandler panelHandler) {
-        this.genreListe = genreListe;
-        this.kategorieListe = kategorieListe;
+    public UI(PanelHandler panelHandler) {
         initComponents();
         setLayout(new java.awt.BorderLayout());
         setVisible(true);
@@ -54,7 +50,6 @@ public class UI extends javax.swing.JFrame {
         beendenMenu = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         informationMenu = new javax.swing.JMenuItem();
-        supportMenu = new javax.swing.JMenuItem();
         startMenu = new javax.swing.JMenuItem();
         optionMenu = new javax.swing.JMenuItem();
         administrationMenu = new javax.swing.JMenu();
@@ -133,14 +128,6 @@ public class UI extends javax.swing.JFrame {
         });
         helpMenu.add(informationMenu);
 
-        supportMenu.setText("Support");
-        supportMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                supportMenuActionPerformed(evt);
-            }
-        });
-        helpMenu.add(supportMenu);
-
         startMenu.setText("Startseite");
         startMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,7 +137,7 @@ public class UI extends javax.swing.JFrame {
         helpMenu.add(startMenu);
 
         optionMenu.setText("Option");
-        optionMenu.setEnabled(false);
+        optionMenu.setEnabled(true);
         optionMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 optionMenuActionPerformed(evt);
@@ -207,12 +194,14 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_beendenMenuActionPerformed
 
     private void LoginLogoutMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginLogoutMenuActionPerformed
+        Logger.debug(this, "LoginLogout");
         panelHandler.panelUnsichtbar();
         add(panelHandler.getLoginPanel());
         panelHandler.getLoginPanel().setVisible(true);
     }//GEN-LAST:event_LoginLogoutMenuActionPerformed
 
     private void editAccountMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAccountMenuActionPerformed
+        Logger.debug(this, "editAccount");
         panelHandler.panelUnsichtbar();
         add(panelHandler.getAccountBearbeitenPanel());
         panelHandler.getAccountBearbeitenPanel().setAccount(panelHandler.getAktuellerUser());
@@ -220,6 +209,7 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_editAccountMenuActionPerformed
 
     private void accountsBearbeitenItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountsBearbeitenItemActionPerformed
+        Logger.debug(this, "accounts");
         panelHandler.panelUnsichtbar();
         panelHandler.getAccountsBearbeitenPanel().fillTable();
         add(panelHandler.getAccountsBearbeitenPanel());
@@ -227,6 +217,7 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_accountsBearbeitenItemActionPerformed
 
     private void historyMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyMenuActionPerformed
+        Logger.debug(this, "history");
         panelHandler.panelUnsichtbar();
         panelHandler.getHistoryPanel().fillTable();
         add(panelHandler.getHistoryPanel());
@@ -234,6 +225,7 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_historyMenuActionPerformed
 
     private void aktuelleAusleiheMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aktuelleAusleiheMenuActionPerformed
+        Logger.debug(this, "ausleihe");
         panelHandler.panelUnsichtbar();
         panelHandler.getAusleihenPanel().setAccount(panelHandler.getAktuellerUser());
         panelHandler.getAusleihenPanel().fillTable();
@@ -248,6 +240,7 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_optionMenuActionPerformed
 
     private void ausleihenBearbeitenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ausleihenBearbeitenActionPerformed
+        Logger.debug(this, "ausleihen");
         panelHandler.panelUnsichtbar();
         panelHandler.getAusleihenBearbeitenPanel().fillTable();
         add(panelHandler.getAusleihenBearbeitenPanel());
@@ -258,12 +251,8 @@ public class UI extends javax.swing.JFrame {
         info();
     }//GEN-LAST:event_informationMenuActionPerformed
 
-    private void supportMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supportMenuActionPerformed
-        entwicklung();
-    }//GEN-LAST:event_supportMenuActionPerformed
-
     private void startMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startMenuActionPerformed
-        mainFrame();
+        setMainFrame();
     }//GEN-LAST:event_startMenuActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -284,32 +273,23 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JMenuItem optionMenu;
     private javax.swing.JMenuItem startMenu;
-    private javax.swing.JMenuItem supportMenu;
     // End of variables declaration//GEN-END:variables
-    // Variablen
 
+    // Variablen
     private void info() {
         JOptionPane.showMessageDialog(rootPane, new Informationen().printEntwickler(), "Entwicklerinfo", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void entwicklung() {
-        JOptionPane.showMessageDialog(rootPane, new Informationen().printEntwicklung(""), "Entwicklung", JOptionPane.ERROR_MESSAGE);
-    }
-
     void setMitarbeiterOnline() {
-        //System.out.println("enable admin");
+        Logger.debug(this, "enable admin");
         administrationMenu.setEnabled(true);
-
-        panelHandler.loadAdminAccounts();
-        panelHandler.loadAusleihen();
     }
 
     void setUserOnline() {
-        //System.out.println("enable user");
+        Logger.debug(this, "enable user");
         editAccountMenu.setEnabled(true);
         historyMenu.setEnabled(true);
         aktuelleAusleiheMenu.setEnabled(true);
-
         panelHandler.getHistory();
         panelHandler.getAusleihe();
     }
@@ -321,7 +301,7 @@ public class UI extends javax.swing.JFrame {
         administrationMenu.setEnabled(false);
     }
 
-    private void mainFrame() {
+    private void setMainFrame() {
         panelHandler.panelUnsichtbar();
         add(panelHandler.getSuchePanel());
         panelHandler.getSuchePanel().setVisible(true);

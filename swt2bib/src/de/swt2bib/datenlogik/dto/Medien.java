@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 public class Medien implements Serializable {
 
+    // Attribute
     private long kategorienId;
     private long genreId;
     private String name;
@@ -18,6 +19,19 @@ public class Medien implements Serializable {
     private String author;
     private String desc;
 
+    /**
+     * Konstruktor für die Medien.
+     *
+     * @param isbn Angaben der ISBN Nummer
+     * @param barcodenummer Angabe des Barcodes
+     * @param genreId Angabe zum Genre
+     * @param kategorienId Angabe zur Kategorie
+     * @param name Titel
+     * @param id Medien ID
+     * @param anzahl Verfügbare Exemplare
+     * @param author Autor vom Buch
+     * @param desc Beschreibung zum Buch
+     */
     public Medien(String isbn, long barcodenummer, long genreId, long kategorienId, String name, long id, int anzahl, String author, String desc) {
         this.kategorienId = kategorienId;
         this.name = name;

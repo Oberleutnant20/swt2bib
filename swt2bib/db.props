@@ -1,0 +1,3 @@
+USER = root
+PW =
+ADR = jdbc:mysql://localhost:3306/

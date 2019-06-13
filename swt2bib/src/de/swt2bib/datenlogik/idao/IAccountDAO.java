@@ -10,7 +10,7 @@ import java.util.List;
  * @author Tim Lorse
  */
 public interface IAccountDAO {
-    List<Account> laden() throws IOException, ConnectionError;
-    void speichern(List<Account> accountListe)  throws IOException, ConnectionError;
-    void update(List<Account> accountListe) throws IOException, ConnectionError;
+    public List<Account> laden() throws IOException, ConnectionError;
+    public void speichern(List<Account> accountListe) throws IOException, ConnectionError;
+    public void update(List<Account> accountListe) throws IOException, ConnectionError;
 }

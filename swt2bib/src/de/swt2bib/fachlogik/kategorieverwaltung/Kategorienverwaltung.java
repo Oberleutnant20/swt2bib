@@ -14,16 +14,29 @@ import java.util.List;
  */
 public class Kategorienverwaltung extends ElternVerwaltung {
 
+    // Attribute
     private ArrayList<Kategorie> kategorieListe;
     private ArrayList<Kategorie> kategorieListeRef;
     private IKategorieDAO kategorieDAO;
 
+    /**
+     * Konstruktor für die Kategorie Verwaltung.
+     *
+     * @param kategorieDAO Kategorie Datenbankobjekt
+     */
     public Kategorienverwaltung(IKategorieDAO kategorieDAO) {
-        kategorieListe = new ArrayList<Kategorie>();
-        kategorieListeRef = new ArrayList<Kategorie>();
+        kategorieListe = new ArrayList<>();
+        kategorieListeRef = new ArrayList<>();
         this.kategorieDAO = kategorieDAO;
+        laden();
     }
 
+    /**
+     * Speichert eine Liste von Kategorien ab.
+     *
+     * @throws IOException IO Fehler
+     * @throws ConnectionError Datenbankverbindungsfehler
+     */
     public void speichern() throws IOException, ConnectionError {
         List<Kategorie> liste = new ArrayList<>();
         if (kategorieListe.size() > kategorieListeRef.size()) {
@@ -32,6 +45,9 @@ public class Kategorienverwaltung extends ElternVerwaltung {
         kategorieDAO.speichern(liste);
     }
 
+    /**
+     * Läd eine Liste von Kategorien.
+     */
     public void laden() {
         kategorieListe.clear();
         kategorieListeRef.clear();
@@ -42,21 +58,31 @@ public class Kategorienverwaltung extends ElternVerwaltung {
                 kategorieListe.add(kategorie);
                 kategorieListeRef.add(kategorie);
             });
-
         } catch (Exception e) {
+            de.swt2bib.Logger.error(this, "laden");
         }
     }
 
+    /**
+     * Fügt ein neues Kategorie Element in der Liste ein.
+     *
+     * @param kategorie neues Kategorie Element
+     */
     public void add(Kategorie kategorie) {
         if (!kategorieListe.add(kategorie)) {
-            String error = "Ausleihe gibt es bereits.";
+            de.swt2bib.Logger.error(this, "Kategorie gibt es bereits.");
         }
         notifyPanels();
     }
 
+    /**
+     * löscht ein Kategorie Element.
+     *
+     * @param kategorie Kategorie, welche gelöscht werden soll
+     */
     public void delete(Kategorie kategorie) {
         if (!kategorieListe.remove(kategorie)) {
-            String error = "Ausleihe gibt es nicht.";
+            de.swt2bib.Logger.error(this, "Kategorie gibt es nicht.");
         }
         notifyPanels();
     }

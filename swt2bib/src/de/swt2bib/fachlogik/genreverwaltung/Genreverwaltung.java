@@ -14,16 +14,29 @@ import java.util.List;
  */
 public class Genreverwaltung extends ElternVerwaltung {
 
+    // Attribut
     private ArrayList<Genre> genreListe;
     private ArrayList<Genre> genreListeRef;
     private IGenreDAO genreDAO;
 
+    /**
+     * Konstruktor für die Genreverwaltung.
+     *
+     * @param genreDAO Genre Datenabnkobjekt
+     */
     public Genreverwaltung(IGenreDAO genreDAO) {
-        genreListe = new ArrayList<Genre>();
-        genreListeRef = new ArrayList<Genre>();
+        genreListe = new ArrayList<>();
+        genreListeRef = new ArrayList<>();
         this.genreDAO = genreDAO;
+        laden();
     }
 
+    /**
+     * Speichert die Genre Liste ab.
+     *
+     * @throws IOException IO Fehler
+     * @throws ConnectionError Datenbankverbidungsfehler
+     */
     public void speichern() throws IOException, ConnectionError {
         List<Genre> liste = new ArrayList<>();
         if (genreListe.size() > genreListeRef.size()) {
@@ -32,6 +45,9 @@ public class Genreverwaltung extends ElternVerwaltung {
         genreDAO.speichern(liste);
     }
 
+    /**
+     * Läd die Genre Liste.
+     */
     public void laden() {
         genreListe.clear();
         genreListeRef.clear();
@@ -42,21 +58,31 @@ public class Genreverwaltung extends ElternVerwaltung {
                 genreListe.add(genre);
                 genreListeRef.add(genre);
             });
-
         } catch (Exception e) {
+            de.swt2bib.Logger.error(this, "laden");
         }
     }
 
+    /**
+     * Fügt ein Genre Element der Liste hinzu.
+     *
+     * @param genre Neues Genre Element
+     */
     public void add(Genre genre) {
         if (!genreListe.add(genre)) {
-            String error = "Ausleihe gibt es bereits.";
+            de.swt2bib.Logger.error(this, "Genre gibt es bereits.");
         }
         notifyPanels();
     }
 
+    /**
+     * Löscht ein Genre Element.
+     *
+     * @param genre Genre, welches gelöscht werden soll
+     */
     public void delete(Genre genre) {
         if (!genreListe.remove(genre)) {
-            String error = "Ausleihe gibt es nicht.";
+            de.swt2bib.Logger.error(this, "Genre gibt es nicht.");
         } else {
             notifyPanels();
         }

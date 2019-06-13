@@ -1,11 +1,15 @@
 package de.swt2bib.ui.panels;
 
+import de.swt2bib.Logger;
 import de.swt2bib.datenlogik.dto.Account;
 import de.swt2bib.datenlogik.dto.Ausleihe;
+import de.swt2bib.datenlogik.dto.Medien;
+import de.swt2bib.fachlogik.languageverwaltung.PropertyName;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -19,6 +23,7 @@ public class AusleihenPanel extends ElternPanel {
 
     /**
      * Creates new form AusleihenPanel
+     * @param panelHandler Angabe Panelhandler
      */
     public AusleihenPanel(PanelHandler panelHandler) {
         super(panelHandler);
@@ -91,13 +96,25 @@ public class AusleihenPanel extends ElternPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Entfernt eine Ausleihe aus der Liste.
+     *
+     * @param evt
+     */
     private void entfernenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entfernenButtonActionPerformed
         try {
-            panelHandler.deleteAusleihe(getAusleihefromIndices(getListSelections()));
+            Ausleihe ausleihe = getAusleihefromIndices(getListSelections());
+            Logger.info(this, "" + ausleihe.getId());
+            panelHandler.deleteAusleihe(ausleihe);
         } catch (Exception e) {
         }
     }//GEN-LAST:event_entfernenButtonActionPerformed
 
+    /**
+     * Führt eine Suche aus.
+     *
+     * @param evt
+     */
     private void sucheFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucheFieldActionPerformed
         panelHandler.panelUnsichtbar();
         panelHandler.getSuchePanel().setSearchTitel(sucheField.getText());
@@ -112,12 +129,23 @@ public class AusleihenPanel extends ElternPanel {
     private javax.swing.JTextField sucheField;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Fragt die Ausleihe ab.
+     *
+     * @param position Index
+     * @return Ausleihe
+     */
     private Ausleihe getAusleihefromIndices(int position) {
         Ausleihe selected = null;
         selected = ausleiheUserListe.get(position);
         return selected;
     }
 
+    /**
+     * Prüft was in der Liste Gewählt wurde.
+     *
+     * @return Index
+     */
     private int getListSelections() {
         int[] selected = jTable1.getSelectedRows();
         for (int i = 0; i < selected.length; i++) {
@@ -126,6 +154,9 @@ public class AusleihenPanel extends ElternPanel {
         return selected[0];
     }
 
+    /**
+     * Füllt die Tabelle mit Daten.
+     */
     public void fillTable() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         for (int i = model.getRowCount() - 1; i > -1; i--) {
@@ -136,11 +167,18 @@ public class AusleihenPanel extends ElternPanel {
         }
     }
 
+    /**
+     * Fügt ein neues Objekt hinzu.
+     *
+     * @param i Indices
+     * @return Neues Objekt
+     */
     private Object[] addObject(int i) {
         String medienName = "";
-        for (int j = 0; j < panelHandler.returnMedien().size(); j++) {
-            if (ausleiheUserListe.get(i).getMedienid() == panelHandler.returnMedien().get(j).getId()) {
-                medienName = panelHandler.returnMedien().get(j).getName();
+        List<Medien> medienlist = panelHandler.returnMedien();
+        for (int j = 0; j < medienlist.size(); j++) {
+            if (ausleiheUserListe.get(i).getMedienid() == medienlist.get(j).getId()) {
+                medienName = medienlist.get(j).getName();
             }
         }
         String kategorieName = "";
@@ -160,8 +198,12 @@ public class AusleihenPanel extends ElternPanel {
         ausleiheUserListe = allAusleihenListe;
     }
 
+    /**
+     * Updatet die Informationen im Aktuellen Panel.
+     */
     @Override
     public void update() {
+        Logger.info(this, "update");
         account = panelHandler.getAktuellerUser();
         if (account != null) {
             ausleiheUserListe = new ArrayList<>();
@@ -172,5 +214,16 @@ public class AusleihenPanel extends ElternPanel {
             }
             fillTable();
         }
+    }
+
+    /**
+     * Setzt die Sprachkonfiguration anhand der Properties um.
+     *
+     * @param props Properties Datei
+     */
+    @Override
+    public void updateLanguage(Properties props) {
+        entfernenButton.setText((String) props.get(PropertyName.AUSLEIHENPANEL_ENTFERNENBUTTON));
+        sucheField.setText((String) props.get(PropertyName.SUCHEFIELD));
     }
 }

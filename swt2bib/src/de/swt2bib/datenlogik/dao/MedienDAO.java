@@ -22,18 +22,27 @@ import java.util.logging.Logger;
  */
 public class MedienDAO extends ElternDAO implements IMedienDAO {
 
+    // Attribute
     private final Database db = new Database();
     private final Connection con = db.connect_mysql_schema();
     private ResultSet rs = null;
-    GenreDAO gen = new GenreDAO();
-    KategorieDAO kat = new KategorieDAO();
+    private GenreDAO gen = new GenreDAO();
+    private KategorieDAO kat = new KategorieDAO();
 
+    /**
+     * Läd die Datenbank Informationen von den Medien in eine Liste.
+     *
+     * @return Liste mit Medien Informationen.
+     * @throws IOException IO Fehler
+     * @throws ConnectionError Datenbankverbindungsfehler
+     */
     @Override
     public List<Medien> laden() throws IOException, ConnectionError {
         ArrayList<Medien> ret = new ArrayList<>();
         if (con != null) {
             try {
-                PreparedStatement ptsm = con.prepareStatement(db.getResultSQLStatement("medien"));
+                String stmnt = db.getResultSQLStatement("medien");
+                PreparedStatement ptsm = con.prepareStatement(stmnt);
                 rs = ptsm.executeQuery();
                 List<Genre> genreListe = gen.laden();
                 List<Kategorie> kategorieListe = kat.laden();
@@ -48,7 +57,8 @@ public class MedienDAO extends ElternDAO implements IMedienDAO {
                     String author = rs.getString("m_Author");
                     String desc = rs.getString("m_Beschreibung");
 
-                    ret.add(new Medien(isbn, barcode, gid, kmid, titel, id, anzahl, author, desc));
+                    Medien medien = new Medien(isbn, barcode, gid, kmid, titel, id, anzahl, author, desc);
+                    ret.add(medien);
                 }
             } catch (SQLException ex) {
                 System.err.println("MedienDAO laden: " + ex);
@@ -59,14 +69,24 @@ public class MedienDAO extends ElternDAO implements IMedienDAO {
         return ret;
     }
 
+    /**
+     * Speichert eine MedienListe in der Datenbank ab.
+     *
+     * @param medienListe Medien liste welche eingefügt werden soll
+     * @throws IOException IO Fehler
+     * @throws ConnectionError Datenbankverbindungsfehler
+     */
     @Override
     public void speichern(List<Medien> medienListe) throws IOException, ConnectionError {
         if (con != null) {
             for (Medien medien : medienListe) {
                 try {
-
-                    PreparedStatement ptsm = con.prepareStatement("INSERT INTO Medien(m_Titel, m_Author, m_ISBN, m_Barcode, m_Anzahl, m_beschreibung, km_ID, g_ID) "
-                            + "VALUES('" + medien.getName() + "','" + medien.getAuthor() + "','" + medien.getIsbn() + "'," + medien.getBarcodenummer() + ", " + medien.getAnzahl() + ", '" + medien.getDesc() + "', " + medien.getKategorienId() + ", " + medien.getGenreId() + ");");
+                    String stmnt = "INSERT INTO Medien(m_Titel, m_Author, m_ISBN, m_Barcode, m_Anzahl, m_beschreibung, km_ID, g_ID) "
+                            + "VALUES('" + medien.getName() + "','" + medien.getAuthor() + "','"
+                            + medien.getIsbn() + "'," + medien.getBarcodenummer() + ", "
+                            + medien.getAnzahl() + ", '" + medien.getDesc() + "', "
+                            + medien.getKategorienId() + ", " + medien.getGenreId() + ");";
+                    PreparedStatement ptsm = con.prepareStatement(stmnt);
                     ptsm.execute();
                 } catch (SQLException ex) {
                     Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,13 +97,21 @@ public class MedienDAO extends ElternDAO implements IMedienDAO {
         }
     }
 
+    /**
+     * Updatet Medien Einträge.
+     *
+     * @param medienListe MedienListe mit den Einträgen, welche Upgedatet werden
+     * sollen
+     * @throws IOException IO Fehler
+     * @throws ConnectionError Datenbankverbindungsfehler
+     */
     @Override
     public void update(List<Medien> medienListe) throws IOException, ConnectionError {
         if (con != null) {
             for (Medien medien : medienListe) {
                 try {
                     String name = medien.getName();
-                    String ISBN = medien.getIsbn();
+                    String isbn = medien.getIsbn();
                     long barcode = medien.getBarcodenummer();
                     int anzahl = medien.getAnzahl();
                     String author = medien.getAuthor();
@@ -91,7 +119,12 @@ public class MedienDAO extends ElternDAO implements IMedienDAO {
                     long gID = medien.getGenreId();
                     long mID = medien.getId();
                     long kID = medien.getKategorienId();
-                    PreparedStatement ptsm = con.prepareStatement("UPDATE Medien SET m_Titel = '" + name + "', m_Author = '" + author + "', m_ISBN = '" + ISBN + "', m_Barcode =" + barcode + ", m_Anzahl = " + anzahl + ", m_beschreibung = '" + desc + "', km_ID = " + kID + ", g_ID = " + gID + " WHERE m_ID LIKE " + mID + ";");
+                    String stmnt = "UPDATE Medien SET m_Titel = '" + name
+                            + "', m_Author = '" + author + "', m_ISBN = '" + isbn
+                            + "', m_Barcode =" + barcode + ", m_Anzahl = " + anzahl
+                            + ", m_beschreibung = '" + desc + "', km_ID = " + kID
+                            + ", g_ID = " + gID + " WHERE m_ID LIKE " + mID + ";";
+                    PreparedStatement ptsm = con.prepareStatement(stmnt);
                     ptsm.execute();
                 } catch (SQLException ex) {
                     Logger.getLogger(MedienDAO.class.getName()).log(Level.SEVERE, null, ex);
