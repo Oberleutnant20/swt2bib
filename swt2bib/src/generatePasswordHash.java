@@ -3,7 +3,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 /**
- *
+ * Generiert den Passworthash für den Benutzer zum initAccount im SQL Script
  * @author root
  */
 public class generatePasswordHash {
@@ -28,7 +28,12 @@ public class generatePasswordHash {
         return pw;
     }
     
-    // Hash generieren
+    /**
+     * Generiert das Passwort und gibt es auf der Console aus.
+     * @param args Not Used
+     * @throws NoSuchAlgorithmException Kein Algorithmus
+     * @throws UnsupportedEncodingException  Falsches Encoding
+     */
     public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         generatePasswordHash generate = new generatePasswordHash();
         

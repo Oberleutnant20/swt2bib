@@ -8,11 +8,20 @@ import java.io.Serializable;
  */
 public class History implements Serializable {
 
-    long id;
-    int userid;
-    long medienid;
-    long kategorieid;
+    // Attribute
+    private long id;
+    private int userid;
+    private long medienid;
+    private long kategorieid;
 
+    /**
+     * Konstruktor für die History.
+     *
+     * @param id History ID
+     * @param userid Nutzer ID
+     * @param medienid Medien ID
+     * @param kategorieid Kategorie ID
+     */
     public History(long id, int userid, long medienid, long kategorieid) {
         this.id = id;
         this.userid = userid;

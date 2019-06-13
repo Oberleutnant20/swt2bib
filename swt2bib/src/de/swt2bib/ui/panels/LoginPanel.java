@@ -1,10 +1,12 @@
 package de.swt2bib.ui.panels;
 
+import de.swt2bib.fachlogik.languageverwaltung.PropertyName;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
 import de.swt2bib.info.exceptions.ConnectionError;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  *
@@ -12,10 +14,13 @@ import java.io.IOException;
  */
 public class LoginPanel extends ElternPanel {
 
+    // Attribute
     private boolean online = false;
+    private Properties props;
 
     /**
      * Creates new form Login
+     * @param panelHandler Angabe Panelhandler
      */
     public LoginPanel(PanelHandler panelHandler) {
         super(panelHandler);
@@ -34,8 +39,8 @@ public class LoginPanel extends ElternPanel {
         accountnameField = new javax.swing.JTextField();
         passwortField = new javax.swing.JPasswordField();
         loginButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        accountLabel = new javax.swing.JLabel();
+        passwordLabel = new javax.swing.JLabel();
         meldungText = new javax.swing.JLabel();
         sucheField = new javax.swing.JTextField();
 
@@ -55,9 +60,9 @@ public class LoginPanel extends ElternPanel {
             }
         });
 
-        jLabel1.setText("Accountname");
+        accountLabel.setText("Accountname");
 
-        jLabel2.setText("Passwort");
+        passwordLabel.setText("Passwort");
 
         meldungText.setText("Bitte gib deinen Accountnamen und Passwort an.");
 
@@ -78,8 +83,8 @@ public class LoginPanel extends ElternPanel {
                     .addComponent(meldungText)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                            .addComponent(passwordLabel)
+                            .addComponent(accountLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(accountnameField)
@@ -99,27 +104,42 @@ public class LoginPanel extends ElternPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(accountnameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(accountLabel))
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(passwortField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(passwordLabel))
                 .addGap(28, 28, 28)
                 .addComponent(loginButton)
                 .addContainerGap(91, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Führt das Login durch.
+     *
+     * @param evt
+     */
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         login();
     }//GEN-LAST:event_loginButtonActionPerformed
 
+    /**
+     * Führt eine Suche aus.
+     *
+     * @param evt
+     */
     private void sucheFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucheFieldActionPerformed
         panelHandler.panelUnsichtbar();
         panelHandler.getSuchePanel().setSearchTitel(sucheField.getText());
         panelHandler.getSuchePanel().setVisible(true);
     }//GEN-LAST:event_sucheFieldActionPerformed
 
+    /**
+     * Führt das Login durch.
+     *
+     * @param evt Enter als Event
+     */
     private void passwortFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwortFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             login();
@@ -128,35 +148,43 @@ public class LoginPanel extends ElternPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel accountLabel;
     private javax.swing.JTextField accountnameField;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JButton loginButton;
     private javax.swing.JLabel meldungText;
+    private javax.swing.JLabel passwordLabel;
     private javax.swing.JPasswordField passwortField;
     private javax.swing.JTextField sucheField;
     // End of variables declaration//GEN-END:variables
 
-    private void einloggen() {
-        String accountname = accountnameField.getText();
-        String passwort = passwortField.getText();
-        if (panelHandler.login(accountname, passwort)) {
-            meldungText.setText("Erfolgreich eingeloggt.");
+    /**
+     * Meldet einen Nutzer im System an.
+     *
+     * @param einloggen Angabe ob true oder false
+     */
+    public void einloggen(boolean einloggen) {
+        if (einloggen) {
+            meldungText.setText((String) props.get(PropertyName.LOGINPANEL_SUCCESSLOGIN));
             accountnameField.setEnabled(false);
             passwortField.setEnabled(false);
-            loginButton.setText("Logout");
+            loginButton.setText((String) props.get(PropertyName.LOGINPANEL_LOGOUTBUTTON));
             online = true;
             panelHandler.panelUnsichtbar();
             panelHandler.getSuchePanel().setVisible(true);
         } else {
-            meldungText.setText("Accountname oder Passwort falsch.");
+            meldungText.setText((String) props.get(PropertyName.LOGINPANEL_WRONG));
         }
     }
 
-    private void ausloggen() throws IOException, ConnectionError {
-        panelHandler.ausloggen();
-        meldungText.setText("Erfolgreich ausgeloggt.");
-        loginButton.setText("Login");
+    /**
+     * Meldet den angemeldeten Nutzer ab.
+     *
+     * @throws IOException IO Fehler
+     * @throws ConnectionError Datenbankverbindungsfehler
+     */
+    public void ausloggen() throws IOException, ConnectionError {
+        meldungText.setText((String) props.get(PropertyName.LOGINPANEL_SUCCESSLOGOUT));
+        loginButton.setText((String) props.get(PropertyName.LOGINPANEL_LOGINBUTTON));
         accountnameField.setEnabled(true);
         passwortField.setEnabled(true);
         online = false;
@@ -166,12 +194,35 @@ public class LoginPanel extends ElternPanel {
     public void update() {
     }
 
+    /**
+     * Setzt die Sprachkonfiguration anhand der Properties um.
+     *
+     * @param props Properties Datei
+     */
+    @Override
+    public void updateLanguage(Properties props) {
+        this.props = props;
+        meldungText.setText((String) props.get(PropertyName.LOGINPANEL_MELDUNG));
+        sucheField.setText((String) props.get(PropertyName.SUCHEFIELD));
+        meldungText.setText((String) props.get(PropertyName.LOGINPANEL_ACCOUNTLABEL));
+        accountLabel.setText((String) props.get(PropertyName.LOGINPANEL_ACCOUNTLABEL));
+        accountnameField.setText((String) props.get(PropertyName.LOGINPANEL_ACCOUNTNAMEFIELD));
+        passwordLabel.setText((String) props.get(PropertyName.LOGINPANEL_PASSWORDLABEL));
+        passwortField.setText((String) props.get(PropertyName.LOGINPANEL_PASSWORTFIELD));
+        loginButton.setText((String) props.get(PropertyName.LOGINPANEL_LOGINBUTTON));
+    }
+
+    /**
+     * Methode zum einloggen
+     */
     private void login() {
         if (!online) {
-            einloggen();
+            String accountname = accountnameField.getText();
+            String passwort = passwortField.getText();
+            panelHandler.login(accountname, passwort);
         } else {
             try {
-                ausloggen();
+                panelHandler.ausloggen();
             } catch (Exception e) {
                 System.err.println(e);
                 meldungText.setText("Speichern der Sitzung nicht möglich");

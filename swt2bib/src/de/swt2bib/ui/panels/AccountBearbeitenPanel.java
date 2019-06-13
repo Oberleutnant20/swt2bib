@@ -1,8 +1,11 @@
 package de.swt2bib.ui.panels;
 
+import de.swt2bib.Logger;
 import de.swt2bib.datenlogik.dto.Account;
+import de.swt2bib.fachlogik.languageverwaltung.PropertyName;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
+import java.util.Properties;
 
 /**
  *
@@ -11,14 +14,15 @@ import de.swt2bib.ui.PanelHandler;
 public class AccountBearbeitenPanel extends ElternPanel {
 
     /**
-     * Creates new form AccountBearbeiten
+     * Creates new form AccountBearbeiten.
      */
     private Account account;
     private boolean neu;
+    private Properties props;
 
     /**
      *
-     * @param panelHandler
+     * @param panelHandler Angabe des PanelHandlers
      */
     public AccountBearbeitenPanel(PanelHandler panelHandler) {
         super(panelHandler);
@@ -195,18 +199,30 @@ public class AccountBearbeitenPanel extends ElternPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Führt eine suche aus.
+     *
+     * @param evt
+     */
     private void sucheFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucheFieldActionPerformed
         panelHandler.panelUnsichtbar();
         panelHandler.getSuchePanel().setSearchTitel(sucheField.getText());
         panelHandler.getSuchePanel().setVisible(true);
     }//GEN-LAST:event_sucheFieldActionPerformed
 
+    /**
+     * Führt das speichern aus.
+     *
+     * @param evt
+     */
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if (!plzField.getText().matches("[0-9]{5}")) {
-            meldungText.setText("PLZ ist ungültig.");
+        boolean checkPLZ = !plzField.getText().matches("[0-9]{5}");
+        if (checkPLZ) {
+            meldungText.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_PLZ));
             return;
         }
-        if (passwortField.getText().equals(checkPasswortField.getText())) {
+        boolean checkPW = passwortField.getText().equals(checkPasswortField.getText());
+        if (checkPW) {
             String hausnummer = hausnummerField.getText();
             String name = nameField.getText();
             int plz = Integer.parseInt(plzField.getText());
@@ -216,9 +232,9 @@ public class AccountBearbeitenPanel extends ElternPanel {
             String passwort = passwortField.getText();
             boolean mitarbeiter = mitarbeiterCheckBox.isSelected();
             save(account.getUserid(), hausnummer, name, plz, stadt, strasse, vorname, passwort, mitarbeiter);
-            meldungText.setText("Änderungen wurden übernommen.");
+            meldungText.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_AENDERUNG));
         } else {
-            meldungText.setText("Passwort stimmt nicht überein.");
+            meldungText.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_PASSWORT));
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
@@ -246,21 +262,64 @@ public class AccountBearbeitenPanel extends ElternPanel {
     private javax.swing.JLabel vornameLable;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Setzt einen bestehenden Account.
+     *
+     * @param a Accountname
+     */
     public void setAccount(Account a) {
         neu = false;
         account = a;
-        if (a == null) {
-            System.out.println("null");
+        if (account == null) {
+            Logger.error(this, "null");
         }
-        hausnummerField.setText(a.getHausnummer());
-        nameField.setText(a.getNachname());
-        plzField.setText("" + a.getPlz());
-        stadtField.setText(a.getOrt());
-        strasseField.setText(a.getStrasse());
-        vornameField.setText(a.getVorname());
-        mitarbeiterCheckBox.setSelected(a.isMitarbeiter());
+        setAccountFields();
     }
 
+    /**
+     * Erstellt einen neuen Account
+     *
+     * @param a Accountname
+     */
+    public void setNewAccount(Account a) {
+        neu = true;
+        account = a;
+        if (account == null) {
+            Logger.error(this, "null");
+        }
+        setAccountFields();
+    }
+
+    /**
+     * Füllt die Accountdaten mit Informationen.
+     */
+    public void setAccountFields() {
+        String plz = "" + account.getPlz();
+        while (plz.length() < 5) {
+            plz += 0;
+        }
+        hausnummerField.setText(account.getHausnummer());
+        nameField.setText(account.getNachname());
+        plzField.setText(plz);
+        stadtField.setText(account.getOrt());
+        strasseField.setText(account.getStrasse());
+        vornameField.setText(account.getVorname());
+        mitarbeiterCheckBox.setSelected(account.isMitarbeiter());
+    }
+
+    /**
+     * Speichert Accountinformationen ab.
+     *
+     * @param id Account ID
+     * @param hausnummer Hausnummer
+     * @param name Nachname
+     * @param plz Postleitzahl
+     * @param ort Ort
+     * @param strasse Straße
+     * @param vorname Vorname
+     * @param passwort Passwort
+     * @param mitarbeiter Ist Mitarbeiter
+     */
     public void save(int id, String hausnummer, String name, int plz, String ort, String strasse, String vorname, String passwort, boolean mitarbeiter) {
         if (!neu) {
             panelHandler.saveAccountChange(account.getUserid(), hausnummer, name, plz, ort, strasse, vorname, passwort, mitarbeiter, account.getUsername());
@@ -269,27 +328,20 @@ public class AccountBearbeitenPanel extends ElternPanel {
         }
     }
 
+    /**
+     * Setzt die CheckBox für die Mitarbeiterbearbeitung.
+     */
     public void bearbeitenMitarbeiter() {
         mitarbeiterCheckBox.setEnabled(true);
     }
 
-    void setNewAccount(Account a) {
-        neu = true;
-        account = a;
-        if (a == null) {
-            System.out.println("null");
-        }
-        hausnummerField.setText(a.getHausnummer());
-        nameField.setText(a.getNachname());
-        plzField.setText("" + a.getPlz());
-        stadtField.setText(a.getOrt());
-        strasseField.setText(a.getStrasse());
-        vornameField.setText(a.getVorname());
-        mitarbeiterCheckBox.setSelected(a.isMitarbeiter());
-    }
-
+    /**
+     * Updatet die Informationen im aktuellen Panel.
+     */
     @Override
     public void update() {
+        Logger.info(this, "update");
+        account = panelHandler.getAktuellerUser();
         if (account != null) {
             hausnummerField.setText(account.getHausnummer());
             nameField.setText(account.getNachname());
@@ -299,5 +351,26 @@ public class AccountBearbeitenPanel extends ElternPanel {
             vornameField.setText(account.getVorname());
             mitarbeiterCheckBox.setSelected(account.isMitarbeiter());
         }
+    }
+
+    /**
+     * Setzt die Sprachkonfiguration anhand der Properties um.
+     *
+     * @param props Properties Datei
+     */
+    @Override
+    public void updateLanguage(Properties props) {
+        this.props = props;
+        vornameLable.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_VORNAMELABLE));
+        strasseLable.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_STRASSELABLE));
+        plzLable.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_PLZLABLE));
+        passwortLable.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_PASSWORTLABLE));
+        checkPasswortLable.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_CHECKPASSWORTLABLE));
+        nameLable.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_NAMELABLE));
+        hausnummerLable.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_HAUSNUMMERLABLE));
+        stadtLable.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_STADTLABLE));
+        mitarbeiterCheckBox.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_MITARBEITERCHECKBOX));
+        saveButton.setText((String) props.get(PropertyName.ACCOUNTBEARBEITENPANEL_SAVEBUTTON));
+        sucheField.setText((String) props.get(PropertyName.SUCHEFIELD));
     }
 }

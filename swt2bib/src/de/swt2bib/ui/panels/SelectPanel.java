@@ -1,9 +1,9 @@
 package de.swt2bib.ui.panels;
 
-import de.swt2bib.datenlogik.dto.Genre;
-import de.swt2bib.datenlogik.dto.Kategorie;
+import de.swt2bib.Logger;
 import de.swt2bib.datenlogik.dto.Medien;
-import de.swt2bib.ui.ElternPanel;
+import de.swt2bib.fachlogik.languageverwaltung.PropertyName;
+import de.swt2bib.ui.ElternComboboxPanel;
 import de.swt2bib.ui.PanelHandler;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
@@ -20,15 +20,14 @@ import javax.swing.JComboBox;
  *
  * @author root
  */
-public class SelectPanel extends ElternPanel {
+public class SelectPanel extends ElternComboboxPanel {
 
     private Medien medium;
+    private Properties props;
 
-    //private final ArrayList<String> genreListe;
-    //
-    //private final ArrayList<String> kategorieListe;
     /**
      * Creates new form SelectPanel
+     * @param panelHandler Angabe Panelhandler
      */
     public SelectPanel(PanelHandler panelHandler) {
         super(panelHandler);
@@ -59,7 +58,7 @@ public class SelectPanel extends ElternPanel {
         genreComboBox = new javax.swing.JComboBox<>();
         kategorieComboBox = new javax.swing.JComboBox<>();
         sucheField = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        dateLable = new javax.swing.JLabel();
         dateComboBox = new javax.swing.JComboBox<>();
         infoLabel = new javax.swing.JLabel();
 
@@ -113,7 +112,7 @@ public class SelectPanel extends ElternPanel {
             }
         });
 
-        jLabel1.setText("Ausleihen bis:");
+        dateLable.setText("Ausleihen bis:");
 
         dateComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -127,7 +126,7 @@ public class SelectPanel extends ElternPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(dateLable)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -196,49 +195,45 @@ public class SelectPanel extends ElternPanel {
                         .addComponent(bearbeitenButton)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(dateLable)
                     .addComponent(dateComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(7, 7, 7))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Führt eine Suche aus.
+     *
+     * @param evt
+     */
     private void sucheFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucheFieldActionPerformed
         panelHandler.panelUnsichtbar();
         panelHandler.getSuchePanel().setSearchTitel(sucheField.getText());
         panelHandler.getSuchePanel().setVisible(true);
     }//GEN-LAST:event_sucheFieldActionPerformed
 
+    /**
+     * Öffnet das Bearbeiten Panel.
+     *
+     * @param evt
+     */
     private void bearbeitenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bearbeitenButtonActionPerformed
-        String beschreibung = beschreibungField.getText();
         String name = nameField.getText();
         String desc = beschreibungField.getText();
-        Kategorie kategorie = null;// kategorieComboBox.getSelectedItem();
-        for (int i = 0; i < panelHandler.getKategorieListe().size(); i++) {
-            if (panelHandler.getKategorieListe().get(i).getBezeichnung().equals(kategorieComboBox.getSelectedItem())) {
-                kategorie = panelHandler.getKategorieListe().get(i);
-            }
-        }
-        Genre genre = null;//genreComboBox.getSelectedItem();
-        for (int i = 0; i < panelHandler.getGenreListe().size(); i++) {
-            if (panelHandler.getGenreListe().get(i).getBezeichnung().equals(genreComboBox.getSelectedItem())) {
-                genre = panelHandler.getGenreListe().get(i);
-            }
-        }
-        Medien m = new Medien(medium.getIsbn(), medium.getBarcodenummer(), genre.getId(), kategorie.getId(), name, medium.getId(), medium.getAnzahl(), medium.getAuthor(), desc);
-        panelHandler.saveMediumChange(m);
-        infoLabel.setText("Status: Erfolgreich gespeichert");
+        panelHandler.saveMediumChange(medium.getIsbn(), medium.getBarcodenummer(), genreComboBox.getSelectedItem(), kategorieComboBox.getSelectedItem(), name, medium.getId(), medium.getAnzahl(), medium.getAuthor(), desc);
+        infoLabel.setText((String) props.get(PropertyName.SELECTPANEL_STATUS_GESPEICHERT));
     }//GEN-LAST:event_bearbeitenButtonActionPerformed
 
+    /**
+     * Öffnet das Ausleihe Panel.
+     *
+     * @param evt
+     */
     private void ausleihenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ausleihenButtonActionPerformed
-        if (statusField.getText().equals("ausgeliehen")) {
-            infoLabel.setText("Status: Ist bereits ausgeliehen");
-        } else {
-            Date date = new Date(dateComboBox.getSelectedItem().toString() + "");
-            panelHandler.createNewAusleihe(medium.getId(), date, medium.getKategorienId());
-            infoLabel.setText("Status: erfolgreich ausgeliehen");
-            ausleihenButton.setEnabled(false);
-        }
-        panelHandler.saveMediumChange(medium);
+        Date date = new Date(dateComboBox.getSelectedItem().toString() + "");
+        panelHandler.createNewAusleihe(medium.getId(), date, medium.getKategorienId());
+        infoLabel.setText((String) props.get(PropertyName.SELECTPANEL_STATUS_AUSGELIEHEN));
+        ausleihenButton.setEnabled(false);
     }//GEN-LAST:event_ausleihenButtonActionPerformed
 
 
@@ -248,10 +243,10 @@ public class SelectPanel extends ElternPanel {
     private javax.swing.JTextArea beschreibungField;
     private javax.swing.JLabel beschreibungLable;
     private javax.swing.JComboBox<String> dateComboBox;
+    private javax.swing.JLabel dateLable;
     private javax.swing.JComboBox<String> genreComboBox;
     private javax.swing.JLabel genreLable;
     private javax.swing.JLabel infoLabel;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> kategorieComboBox;
     private javax.swing.JLabel kategorieLable;
@@ -262,6 +257,9 @@ public class SelectPanel extends ElternPanel {
     private javax.swing.JTextField sucheField;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Setzt die Mitarbeiterfunktionen auf true.
+     */
     public void setMitarbeiter() {
         bearbeitenButton.setEnabled(true);
         genreComboBox.setEnabled(true);
@@ -271,36 +269,29 @@ public class SelectPanel extends ElternPanel {
         statusField.setEnabled(true);
     }
 
+    /**
+     * Setzt ein Medium.
+     *
+     * @param m Medium
+     */
     public void setMedium(Medien m) {
         medium = m;
-        infoLabel.setText("Status:");
+        infoLabel.setText((String) props.get(PropertyName.SELECTPANEL_STATUS));
         if (panelHandler.getVerfuegbare((int) m.getId()) == 0) {
-            statusField.setText("ausgeliehen");
+            statusField.setText((String) props.get(PropertyName.SELECTPANEL_AUSGELIEHEN));
             ausleihenButton.setEnabled(false);
         } else {
-            statusField.setText("vorhanden");
+            statusField.setText((String) props.get(PropertyName.SELECTPANEL_VORHANDEN));
             ausleihenButton.setEnabled(true);
         }
-        beschreibungField.setText("blablalba - in arbeit");
+        beschreibungField.setText(m.getDesc());
         nameField.setText(m.getName());
     }
-
-    private void setComboboxKategorie(JComboBox combobox, List<Kategorie> list) {
-        String[] tmp = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            tmp[i] = list.get(i).getBezeichnung();
-        }
-        combobox.setModel(new DefaultComboBoxModel(tmp));
-    }
-
-    private void setComboboxGenre(JComboBox combobox, List<Genre> list) {
-        String[] tmp = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            tmp[i] = list.get(i).getBezeichnung();
-        }
-        combobox.setModel(new DefaultComboBoxModel(tmp));
-    }
-
+/**
+     * Füllt die ComboBox mit Datum Informationen
+     *
+     * @param combobox ComboBox, welche gefüllt werden soll
+     */
     private void setComboboxDate(JComboBox combobox) {
         ArrayList<Date> datelist = new ArrayList<Date>();
         for (int i = 15; i <= 45; i += 15) {
@@ -308,13 +299,19 @@ public class SelectPanel extends ElternPanel {
         }
         String[] tmp = new String[datelist.size()];
         for (int i = 0; i < datelist.size(); i++) {
-            DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.ENGLISH);//
+            DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.ENGLISH);
             String date = formatter.format(datelist.get(i));
             tmp[i] = date;
         }
         combobox.setModel(new DefaultComboBoxModel(tmp));
     }
 
+    /**
+     * Fügt dem Kalender Tage hinzu.
+     *
+     * @param days Angabe der Tage
+     * @return Datum bis wann man es ausleihen kann
+     */
     private static Date addDays(int days) {
         Calendar c = new GregorianCalendar();
         c.add(Calendar.DATE, days);
@@ -322,9 +319,32 @@ public class SelectPanel extends ElternPanel {
         return date;
     }
 
+    /**
+     * Updatet die Informationen im aktuellen Panel.
+     */
     @Override
     public void update() {
+        Logger.info(this, "update");
         setComboboxKategorie(kategorieComboBox, panelHandler.getKategorieListe());
         setComboboxGenre(genreComboBox, panelHandler.getGenreListe());
+    }
+
+    /**
+     * Setzt die Sprachkonfiguration anhand der Properties um.
+     *
+     * @param props Properties Datei
+     */
+    @Override
+    public void updateLanguage(Properties props) {
+        this.props = props;
+        sucheField.setText((String) props.get(PropertyName.SUCHEFIELD));
+        nameLable.setText((String) props.get(PropertyName.SELECTPANEL_NAMELABLE));
+        statusLable.setText((String) props.get(PropertyName.SELECTPANEL_STATUSLABLE));
+        beschreibungLable.setText((String) props.get(PropertyName.SELECTPANEL_BESCHREIBUNGLABLE));
+        kategorieLable.setText((String) props.get(PropertyName.SELECTPANEL_KATEGORIELABLE));
+        genreLable.setText((String) props.get(PropertyName.SELECTPANEL_GENRELABLE));
+        ausleihenButton.setText((String) props.get(PropertyName.SELECTPANEL_AUSLEIHENBUTTON));
+        infoLabel.setText((String) props.get(PropertyName.SELECTPANEL_INFOLABEL));
+        dateLable.setText((String) props.get(PropertyName.SELECTPANEL_DATELABLE));
     }
 }

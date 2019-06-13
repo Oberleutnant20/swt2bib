@@ -14,20 +14,33 @@ import java.util.List;
  */
 public class Medienverwaltung extends ElternVerwaltung {
 
+    // Attribute
     private ArrayList<Medien> medienListe;
     private ArrayList<Medien> medienListeRef;
     private ArrayList<Medien> medienListeUpdate;
     private ArrayList<Medien> medienListeDelete;
     private IMedienDAO medienDAO;
 
+    /**
+     * Konstruktor für die Medienverwaltung.
+     *
+     * @param medienDAO Medien Datenbankobjekt
+     */
     public Medienverwaltung(IMedienDAO medienDAO) {
-        medienListe = new ArrayList<Medien>();
-        medienListeRef = new ArrayList<Medien>();
-        medienListeUpdate = new ArrayList<Medien>();
-        medienListeDelete = new ArrayList<Medien>();
+        medienListe = new ArrayList<>();
+        medienListeRef = new ArrayList<>();
+        medienListeUpdate = new ArrayList<>();
+        medienListeDelete = new ArrayList<>();
         this.medienDAO = medienDAO;
+        laden();
     }
 
+    /**
+     * Speichert die Medien Liste ab.
+     *
+     * @throws IOException IO Fehler
+     * @throws ConnectionError Datenbankverbindungsfehler
+     */
     public void speichern() throws IOException, ConnectionError {
         List<Medien> liste = new ArrayList<>();
         if (medienListe.size() > medienListeRef.size()) {
@@ -37,6 +50,9 @@ public class Medienverwaltung extends ElternVerwaltung {
         medienDAO.update(medienListeUpdate);
     }
 
+    /**
+     * Läd die Medien.
+     */
     public void laden() {
         medienListe.clear();
         medienListeRef.clear();
@@ -47,42 +63,53 @@ public class Medienverwaltung extends ElternVerwaltung {
                 medienListe.add(medium);
                 medienListeRef.add(medium);
             }
-
         } catch (Exception e) {
             de.swt2bib.Logger.error(this, "laden");
         }
     }
 
+    /**
+     * Fügt der Medienliste neue Elemente hinzu.
+     *
+     * @param medium Medium, welches hinzugefügt werden soll
+     */
     public void add(Medien medium) {
         if (!medienListe.add(medium)) {
-            String error = "Medium gibt es bereits.";
-            System.out.println(error);
+            de.swt2bib.Logger.error(this, "Medium gibt es bereits.");
         }
         notifyPanels();
     }
 
+    /**
+     * Löscht ein Medien Element.
+     *
+     * @param medien Medium, welches gelöscht werden soll
+     */
     public void delete(Medien medien) {
         if (!medienListe.remove(medien)) {
-            String error = "Medium gibt es nicht.";
-            System.out.println(error);
+            de.swt2bib.Logger.error(this, "Medium gibt es nicht.");
         }
         notifyPanels();
     }
 
+    /**
+     * Updatet ein Medien Element.
+     *
+     * @param medien Medium, welches upgedatet werden soll
+     */
     public void update(Medien medien) {
         if (!medienListe.add(medien)) {
-            String error = "Medium gibt es bereits.";
-            System.out.println(error);
+            de.swt2bib.Logger.error(this, "Medium gibt es bereits.");
         }
         medienListeUpdate.add(medien);
         notifyPanels();
     }
 
     public ArrayList<Medien> get() {
-        ArrayList<Medien> liste = new ArrayList<Medien>();
+        ArrayList<Medien> liste = new ArrayList<>();
         for (Medien medien : medienListe) {
             liste.add(medien);
-            System.out.println(medien.getName());
+            de.swt2bib.Logger.debug(this, medien.getName());
         }
         return liste;
     }

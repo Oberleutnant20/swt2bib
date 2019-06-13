@@ -8,10 +8,18 @@ import java.io.Serializable;
  */
 public class Kategorie implements Serializable {
 
+    // Attribute
     private long id;
     private String name;
     private String bezeichnung;
 
+    /**
+     * Konstruktor für die Kategorien.
+     *
+     * @param id Kategorie ID
+     * @param name Name der Kategorie
+     * @param bezeichnung Beschreibung
+     */
     public Kategorie(long id, String name, String bezeichnung) {
         this.id = id;
         this.name = name;

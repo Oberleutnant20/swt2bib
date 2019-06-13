@@ -9,12 +9,22 @@ import java.util.Date;
  */
 public class Ausleihe implements Serializable {
 
+    // Attribute
     private long id;
     private long medienid;
     private Date date;
     private int userid;
     private long kategorieid;
 
+    /**
+     * Konstruktor für Ausleihen.
+     *
+     * @param id Ausleihe ID
+     * @param medienid Medien ID
+     * @param date Datum
+     * @param userid Nutzer ID
+     * @param kategorieid Kategorie ID
+     */
     public Ausleihe(long id, long medienid, Date date, int userid, long kategorieid) {
         this.id = id;
         this.medienid = medienid;
