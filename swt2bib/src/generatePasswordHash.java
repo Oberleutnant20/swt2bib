@@ -9,8 +9,7 @@ import java.security.NoSuchAlgorithmException;
 public class generatePasswordHash {
     private String username = null;
     private String pw = null;
-
-    
+        
     // Setzen von username und pw
     public void setUsername(String username) {
         this.username = username;
