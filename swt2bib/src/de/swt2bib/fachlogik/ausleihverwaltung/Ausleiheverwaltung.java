@@ -14,20 +14,33 @@ import java.util.List;
  */
 public class Ausleiheverwaltung extends ElternVerwaltung {
 
+    // Attribute
     private ArrayList<Ausleihe> ausleiheListe;
     private ArrayList<Ausleihe> ausleiheListeRef;
     private ArrayList<Ausleihe> ausleiheListeUpdate;
     private ArrayList<Ausleihe> ausleiheListeDelete;
     private IAusleiheDAO ausleiheDAO;
 
+    /**
+     * Konstruktor für die Ausleihe Verwaltung.
+     *
+     * @param ausleiheDAO Ausleihe Datenbankobjekt
+     */
     public Ausleiheverwaltung(IAusleiheDAO ausleiheDAO) {
-        ausleiheListe = new ArrayList<Ausleihe>();
-        ausleiheListeRef = new ArrayList<Ausleihe>();
-        ausleiheListeUpdate = new ArrayList<Ausleihe>();
-        ausleiheListeDelete = new ArrayList<Ausleihe>();
+        ausleiheListe = new ArrayList<>();
+        ausleiheListeRef = new ArrayList<>();
+        ausleiheListeUpdate = new ArrayList<>();
+        ausleiheListeDelete = new ArrayList<>();
         this.ausleiheDAO = ausleiheDAO;
+        laden();
     }
 
+    /**
+     * Speichert die Ausleihe ab.
+     *
+     * @throws IOException IO Fehler
+     * @throws ConnectionError Datenbankverbindungsfehler
+     */
     public void speichern() throws IOException, ConnectionError {
         List<Ausleihe> liste = new ArrayList<>();
         if (ausleiheListe.size() > ausleiheListeRef.size()) {
@@ -37,6 +50,9 @@ public class Ausleiheverwaltung extends ElternVerwaltung {
         ausleiheDAO.loeschen(ausleiheListeDelete);
     }
 
+    /**
+     * Läd die Ausleihe.
+     */
     public void laden() {
         ausleiheListe.clear();
         ausleiheListeRef.clear();
@@ -47,40 +63,54 @@ public class Ausleiheverwaltung extends ElternVerwaltung {
                 ausleiheListe.add(ausleihe);
                 ausleiheListeRef.add(ausleihe);
             }
-
         } catch (Exception e) {
             de.swt2bib.Logger.error(this, "laden Error");
         }
     }
 
+    /**
+     * Fügt der Ausleihe ein neues Element hinzu.
+     *
+     * @param ausleihe Ausleihe, was hinzugefügt werden soll.
+     */
     public void add(Ausleihe ausleihe) {
         if (!ausleiheListe.add(ausleihe)) {
-            String error = "Ausleihe gibt es bereits.";
+            de.swt2bib.Logger.error(this, "Ausleihe gibt es bereits.");
         }
         notifyPanels();
     }
 
+    /**
+     * Löscht ein Ausleihe Element.
+     *
+     * @param ausleihe Ausleihe, welches gelöscht werden soll.
+     */
     public void delete(Ausleihe ausleihe) {
         if (!ausleiheListeDelete.add(ausleihe)) {
-            String error = "Ausleihe gibt es nicht.";
+            de.swt2bib.Logger.error(this, "Ausleihe gibt es nicht.");
         } else {
             ausleiheListe.remove(ausleihe);
             notifyPanels();
         }
     }
 
+    /**
+     * Updatet ein Ausleihe Element
+     *
+     * @param ausleihe Ausleihe, welche upgedatet werden soll
+     */
     public void update(Ausleihe ausleihe) {
         if (!ausleiheListeUpdate.add(ausleihe)) {
-            String error = "Ausleihe gibt es nicht.";
+            de.swt2bib.Logger.error(this, "Ausleihe gibt es nicht.");
         }
         notifyPanels();
     }
 
     public ArrayList<Ausleihe> get() {
-        ArrayList<Ausleihe> liste = new ArrayList<Ausleihe>();
-        for (Ausleihe ausleihe : ausleiheListe) {
+        ArrayList<Ausleihe> liste = new ArrayList<>();
+        ausleiheListe.forEach((ausleihe) -> {
             liste.add(ausleihe);
-        }
+        });
         return liste;
     }
 }

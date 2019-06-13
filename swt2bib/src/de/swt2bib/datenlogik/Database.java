@@ -11,8 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Database Class with Connect, Disconnect, Resultset and Blobfile.
@@ -23,6 +24,34 @@ public class Database {
 
     //Attribute
     private final static String schema = "swt2bib";
+    private String user;
+    private String pwd;
+    private String adr;
+
+    /**
+     * Der Konstruktor der Databaseklasse, liest die Properties Datei ein.
+     */
+    public Database() {
+        FileReader fileReader = null;
+        try {
+            Properties props = new Properties();
+            fileReader = new FileReader("db.props");
+            props.load(fileReader);
+            user = (String) props.get("USER");
+            pwd = (String) props.get("PW");
+            adr = (String) props.get("ADR");
+        } catch (Exception ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (fileReader != null) {
+                try {
+                    fileReader.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 
     /**
      *
@@ -56,7 +85,8 @@ public class Database {
      * @return Connection if Successful
      */
     public Connection connect_mysql_schema() {
-        return connect_mysql("jdbc:mysql://localhost:3306/" + schema, "root", "");
+        return connect_mysql(adr + schema, user, pwd);
+        //return connect_mysql("jdbc:mysql://localhost:3306/" + schema, "root", "");
     }
 
     /**
@@ -242,7 +272,6 @@ public class Database {
         String nextLine;
         StringBuilder sb = new StringBuilder();
         while ((nextLine = br.readLine()) != null) {
-            //System.out.println("Writing: " + nextLine);
             writerArg.write(nextLine);
             sb.append(nextLine);
         }
@@ -255,7 +284,7 @@ public class Database {
     /**
      *
      * @param rs ResultSet
-     * @return
+     * @return Metadaten
      */
     public static ResultSetMetaData getMetaData(ResultSet rs) {
         ResultSetMetaData ret = null;
@@ -266,9 +295,10 @@ public class Database {
         }
         return ret;
     }
-    
+
     /**
-     * SQL Statement fÃ¼r alles abrufen "Select * From Tabelle;"
+     * SQL Statement für alles abrufen "Select * From Tabelle;"
+     *
      * @param table angabe der Tabelle
      * @return SQL Statement String
      */
@@ -277,4 +307,3 @@ public class Database {
     }
 
 }
-

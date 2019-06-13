@@ -10,7 +10,6 @@ import java.util.List;
  * @author Tim Lorse
  */
 public interface IKategorieDAO {
-    List<Kategorie> laden() throws IOException, ConnectionError;
-    void speichern(List<Kategorie> kategorieListe)  throws IOException, ConnectionError;
-    //void update(List<Kategorie> kategorieListe) throws IOException, ConnectionError;
+    public List<Kategorie> laden() throws IOException, ConnectionError;
+    public void speichern(List<Kategorie> kategorieListe)  throws IOException, ConnectionError;
 }

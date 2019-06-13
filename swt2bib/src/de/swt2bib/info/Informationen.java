@@ -25,7 +25,7 @@ public class Informationen {
         return "Name: " + name + " \n"
                 //+ "Mail: " + mail + " \n"
                 + "Version: " + version + " \n"
-                + "©"+copyright;
+                + "© "+copyright;
     }
 
     /**

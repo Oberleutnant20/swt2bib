@@ -1,26 +1,25 @@
 package de.swt2bib.ui;
 
-import java.util.Properties;
+import de.swt2bib.datenlogik.dto.Genre;
+import de.swt2bib.datenlogik.dto.Kategorie;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 
 /**
+ * Zentrale Klasse für die Panels, die Comboboxen für Kategorie und Genre haben
  *
  * @author root
  */
-public abstract class ElternPanel extends javax.swing.JPanel {
-
-    public final PanelHandler panelHandler;
+public abstract class ElternComboboxPanel extends ElternPanel {
 
     /**
      * Creates new form ElternPanel
      * @param panelHandler Angabe Panelhandler
      */
-    public ElternPanel(PanelHandler panelHandler) {
-        this.panelHandler = panelHandler;
+    public ElternComboboxPanel(PanelHandler panelHandler) {
+        super(panelHandler);
     }
-
-    public abstract void update();
-
-    public abstract void updateLanguage(Properties props);
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,4 +45,20 @@ public abstract class ElternPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+    
+    public void setComboboxKategorie(JComboBox combobox, List<Kategorie> list) {
+        String[] tmp = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            tmp[i] = list.get(i).getBezeichnung();
+        }
+        combobox.setModel(new DefaultComboBoxModel(tmp));
+    }
+
+    public void setComboboxGenre(JComboBox combobox, List<Genre> list) {
+        String[] tmp = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            tmp[i] = list.get(i).getBezeichnung();
+        }
+        combobox.setModel(new DefaultComboBoxModel(tmp));
+    }
 }

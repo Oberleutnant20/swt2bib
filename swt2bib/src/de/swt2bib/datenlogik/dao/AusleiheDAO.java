@@ -21,16 +21,25 @@ import java.util.logging.Logger;
  */
 public class AusleiheDAO extends ElternDAO implements IAusleiheDAO {
 
+    // Attribute
     private final Database db = new Database();
     private final Connection con = db.connect_mysql_schema();
     private ResultSet rs = null;
 
+    /**
+     * Läd die Datenbank Informationen von den Ausleihen in eine Liste.
+     *
+     * @return Liste mit Ausleihen
+     * @throws IOException IO Fehler
+     * @throws ConnectionError Datenbankverbindungsfehler
+     */
     @Override
     public List<Ausleihe> laden() throws IOException, ConnectionError {
         ArrayList<Ausleihe> ret = new ArrayList<>();
         if (con != null) {
             try {
-                PreparedStatement ptsm = con.prepareStatement("SELECT a_ID, a_Date, u_ID, m_ID, km_ID FROM ausleihe;");
+                String stmnt = "SELECT a_ID, a_Date, u_ID, m_ID, km_ID FROM ausleihe;";
+                PreparedStatement ptsm = con.prepareStatement(stmnt);
                 rs = ptsm.executeQuery();
                 while (rs.next()) {
                     long id = rs.getLong("a_ID");
@@ -49,14 +58,24 @@ public class AusleiheDAO extends ElternDAO implements IAusleiheDAO {
         return ret;
     }
 
+    /**
+     * Speichert neue Ausleihen in der Datenbank ab.
+     *
+     * @param ausleiheListe neue Liste mit neuen Ausleihe Informationen
+     * @throws IOException IO Fehler
+     * @throws ConnectionError Datenbankverbindungsfehler
+     */
     @Override
     public void speichern(List<Ausleihe> ausleiheListe) throws IOException, ConnectionError {
         if (con != null) {
             for (Ausleihe ausleihe : ausleiheListe) {
                 try {
                     String pattern = "YYYY-MM-DD";
-                    PreparedStatement ptsm = con.prepareStatement("INSERT INTO Ausleihe(a_DATE, u_ID, m_id, km_id) "
-                            + "VALUES('" + new java.sql.Date(ausleihe.getDate().getTime()) + "', " + ausleihe.getUserid() + ", " + ausleihe.getMedienid() + ", " + ausleihe.getKategorieid() + ");");
+                    String stmnt = "INSERT INTO Ausleihe(a_DATE, u_ID, m_id, km_id) "
+                            + "VALUES('" + new java.sql.Date(ausleihe.getDate().getTime()) + "', "
+                            + ausleihe.getUserid() + ", " + ausleihe.getMedienid() + ", "
+                            + ausleihe.getKategorieid() + ");";
+                    PreparedStatement ptsm = con.prepareStatement(stmnt);
 
                     ptsm.execute();
                 } catch (SQLException ex) {
@@ -68,18 +87,25 @@ public class AusleiheDAO extends ElternDAO implements IAusleiheDAO {
         }
     }
 
+    /**
+     * Updatet die Ausleihe Liste.
+     *
+     * @param ausleiheListe Liste mit upzudatenden Informationen
+     * @throws IOException IO Fehler
+     * @throws ConnectionError Datenbankverbindungsfehler
+     */
     @Override
     public void loeschen(List<Ausleihe> ausleiheListe) throws IOException, ConnectionError {
-        if(con != null){
-            for (Ausleihe ausleihe : ausleiheListe) {
+        if (con != null) {
+            ausleiheListe.forEach((ausleihe) -> {
                 try {
-                    PreparedStatement ptsm = con.prepareStatement("DELETE FROM Ausleihe WHERE a_ID LIKE "+ausleihe.getId());
+                    String stmnt = "DELETE FROM Ausleihe WHERE a_ID LIKE " + ausleihe.getId();
+                    PreparedStatement ptsm = con.prepareStatement(stmnt);
                     ptsm.execute();
                 } catch (SQLException ex) {
                     Logger.getLogger(AusleiheDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-            }
+            });
         } else {
             throw new ConnectionError();
         }

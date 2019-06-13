@@ -1,9 +1,12 @@
 package de.swt2bib.ui.panels;
 
+import de.swt2bib.Logger;
 import de.swt2bib.datenlogik.dto.Account;
+import de.swt2bib.fachlogik.languageverwaltung.PropertyName;
 import de.swt2bib.ui.ElternPanel;
 import de.swt2bib.ui.PanelHandler;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -12,16 +15,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class AccountsBearbeitenPanel extends ElternPanel {
 
-    ArrayList<Account> accountListe;
+    List<Account> accountListe;
 
     /**
      * Creates new form AccountsBearbeiten
+     * @param panelHandler Angabe Panelhandler
      */
     public AccountsBearbeitenPanel(PanelHandler panelHandler) {
         super(panelHandler);
         initComponents();
-        //setAccountListe();
-        //fillTable();
     }
 
     /**
@@ -125,12 +127,22 @@ public class AccountsBearbeitenPanel extends ElternPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Führt eine Suche aus.
+     *
+     * @param evt
+     */
     private void sucheFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucheFieldActionPerformed
         panelHandler.panelUnsichtbar();
         panelHandler.getSuchePanel().setSearchTitel(sucheField.getText());
         panelHandler.getSuchePanel().setVisible(true);
     }//GEN-LAST:event_sucheFieldActionPerformed
 
+    /**
+     * Öffnet das Bearbeitenpanel für Accounts.
+     *
+     * @param evt
+     */
     private void bearbeitenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bearbeitenButtonActionPerformed
         try {
             Account a = getAccountfromIndices(getListSelections());
@@ -141,24 +153,31 @@ public class AccountsBearbeitenPanel extends ElternPanel {
             panelHandler.getAccountBearbeitenPanel().setVisible(true);
         } catch (Exception e) {
         }
-
-
     }//GEN-LAST:event_bearbeitenButtonActionPerformed
 
+    /**
+     * Legt einen neuen Nutzer an.
+     *
+     * @param evt
+     */
     private void anlegenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anlegenButtonActionPerformed
-        if (!acountNameZulaessig(accountnameField.getText())) {
-        } else {
+        if (acountNameZulaessig(accountnameField.getText())) {
+            Account account = new Account(accountnameField.getText(), "todo", false, 0, "todo", "todo", 0, "todo", "todo", "todo");
             panelHandler.panelUnsichtbar();
             panelHandler.getUi().add(panelHandler.getAccountBearbeitenPanel());
             panelHandler.getAccountBearbeitenPanel().bearbeitenMitarbeiter();
-            panelHandler.getAccountBearbeitenPanel().setNewAccount(new Account(accountnameField.getText(), "todo", false, 0, "todo", "todo", 0, "todo", "todo", "todo"));
+            panelHandler.getAccountBearbeitenPanel().setNewAccount(account);
             panelHandler.getAccountBearbeitenPanel().setVisible(true);
         }
     }//GEN-LAST:event_anlegenButtonActionPerformed
 
+    /**
+     * sucht einen Account aus der Tabelle.
+     *
+     * @param evt
+     */
     private void sucheAccountFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucheAccountFieldActionPerformed
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-
         for (int i = model.getRowCount() - 1; i > -1; i--) {
             model.removeRow(i);
         }
@@ -187,12 +206,10 @@ public class AccountsBearbeitenPanel extends ElternPanel {
     private javax.swing.JTextField sucheField;
     // End of variables declaration//GEN-END:variables
 
-    public void setAccountListe(ArrayList<Account> account) {
-        accountListe = account;
-    }
-
+    /**
+     * Füllt die Tabelle mit Daten.
+     */
     public void fillTable() {
-        panelHandler.loadAdminAccounts();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         for (int i = model.getRowCount() - 1; i > -1; i--) {
             model.removeRow(i);
@@ -202,12 +219,23 @@ public class AccountsBearbeitenPanel extends ElternPanel {
         }
     }
 
+    /**
+     * Fragt einen Account an einer bestimmten Position ab.
+     *
+     * @param position Index
+     * @return Ausgewählter Account
+     */
     private Account getAccountfromIndices(int position) {
         Account selected = null;
         selected = accountListe.get(position);
         return selected;
     }
 
+    /**
+     * Prüft, welches Element in der Liste gewählt.
+     *
+     * @return Index
+     */
     private int getListSelections() {
         int[] selected = jTable1.getSelectedRows();
         for (int i = 0; i < selected.length; i++) {
@@ -216,9 +244,14 @@ public class AccountsBearbeitenPanel extends ElternPanel {
         return selected[0];
     }
 
+    /**
+     * Prüft, ob ein Accountname schon vorhanden ist.
+     *
+     * @param text Nutzername, welcher geprüft werden soll.
+     * @return True, wenn der Name verfügbar ist. False, wenn bereits vergeben.
+     */
     private boolean acountNameZulaessig(String text) {
         if (text.length() <= 8 && text.length() > 0) {
-
             for (int i = 0; i < accountListe.size(); i++) {
                 if (accountListe.get(i).getUsername().equals(text)) {
                     return false;
@@ -230,8 +263,26 @@ public class AccountsBearbeitenPanel extends ElternPanel {
         }
     }
 
+    /**
+     * Updatet die Informationen im aktuellen Panel.
+     */
     @Override
     public void update() {
+        Logger.info(this, "update");
+        accountListe = panelHandler.getAllAccounts();
         fillTable();
+    }
+
+    /**
+     * Setzt die Sprachkonfiguration anhand der Properties um.
+     *
+     * @param props Properties Datei
+     */
+    @Override
+    public void updateLanguage(Properties props) {
+        sucheAccountField.setText((String) props.get(PropertyName.ACCOUNTSBEARBEITENPANEL_SUCHEACCOUNTFIELD));
+        anlegenButton.setText((String) props.get(PropertyName.ACCOUNTSBEARBEITENPANEL_ANLEGENBUTTON));
+        bearbeitenButton.setText((String) props.get(PropertyName.ACCOUNTSBEARBEITENPANEL_BEARBEITENBUTTON));
+        sucheField.setText((String) props.get(PropertyName.SUCHEFIELD));
     }
 }

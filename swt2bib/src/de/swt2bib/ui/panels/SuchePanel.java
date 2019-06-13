@@ -1,31 +1,31 @@
 package de.swt2bib.ui.panels;
 
+import de.swt2bib.Logger;
 import de.swt2bib.datenlogik.dto.Genre;
 import de.swt2bib.datenlogik.dto.Kategorie;
 import de.swt2bib.datenlogik.dto.Medien;
-import de.swt2bib.ui.ElternPanel;
+import de.swt2bib.fachlogik.languageverwaltung.PropertyName;
+import de.swt2bib.ui.ElternComboboxPanel;
 import de.swt2bib.ui.PanelHandler;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
+import java.util.Properties;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author root
  */
-public class SuchePanel extends ElternPanel {
+public class SuchePanel extends ElternComboboxPanel {
 
     List<Medien> medienListe;
 
     /**
      * Creates new form SuchePanel
+     * @param panelHandler Angabe Panelhandler
      */
     public SuchePanel(PanelHandler panelHandler) {
         super(panelHandler);
         initComponents();
-        setComboboxKategorie(kategorieComboBox, panelHandler.getKategorieListe());
-        setComboboxGenre(genreComboBox, panelHandler.getGenreListe());
     }
 
     /**
@@ -125,35 +125,46 @@ public class SuchePanel extends ElternPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Ruft das Select Panel auf.
+     *
+     * @param evt
+     */
     private void selectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtonActionPerformed
-        try {
-            panelHandler.getSelectPanel().setMedium(getMediumfromIndices(getListSelections()));
-            if (panelHandler.getAktuellerUser().isMitarbeiter()) {
-                panelHandler.getSelectPanel().setMitarbeiter();
+        if (panelHandler.getAktuellerUser() != null) {
+            try {
+                panelHandler.setSelectPanel(getMediumfromIndices(getListSelections()));
+            } catch (Exception e) {
+                System.err.println("problem beim aufrufen vom selectpanel");
             }
-            panelHandler.panelUnsichtbar();
-            panelHandler.getUi().add(panelHandler.getSelectPanel());
-            panelHandler.getSelectPanel().setVisible(true);
-        } catch (Exception e) {
-            System.err.println("problem beim aufrufen vom selectpanel");
         }
-
     }//GEN-LAST:event_selectButtonActionPerformed
 
+    /**
+     * Ruft die Methode setSerchTitel auf.
+     *
+     * @param evt
+     */
     private void sucheFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucheFieldActionPerformed
         setSearchTitel(sucheField.getText());
     }//GEN-LAST:event_sucheFieldActionPerformed
 
+    /**
+     * Auswahl der Kategorie durch eine ComboBox.
+     *
+     * @param evt
+     */
     private void kategorieComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kategorieComboBoxActionPerformed
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        String text = kategorieComboBox.getItemAt(0);
+        String text = (String) kategorieComboBox.getSelectedItem();
         for (int i = model.getRowCount() - 1; i > -1; i--) {
             model.removeRow(i);
         }
         int kategorieid = -1;
-        for (int i = 0; i < panelHandler.getKategorieListe().size(); i++) {
-            if (panelHandler.getKategorieListe().get(i).getBezeichnung().equals(text)) {
-                kategorieid = (int) panelHandler.getKategorieListe().get(i).getId();
+        List<Kategorie> list = panelHandler.getKategorieListe();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getBezeichnung().equals(text)) {
+                kategorieid = (int) list.get(i).getId();
             }
         }
         for (int i = 0; i < medienListe.size(); i++) {
@@ -163,16 +174,22 @@ public class SuchePanel extends ElternPanel {
         }
     }//GEN-LAST:event_kategorieComboBoxActionPerformed
 
+    /**
+     * Auswahl des Genres durch eine Combobox.
+     *
+     * @param evt
+     */
     private void genreComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genreComboBoxActionPerformed
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        String text = genreComboBox.getItemAt(0);
+        String text = (String) genreComboBox.getSelectedItem();
         for (int i = model.getRowCount() - 1; i > -1; i--) {
             model.removeRow(i);
         }
         int genreid = -1;
-        for (int i = 0; i < panelHandler.getKategorieListe().size(); i++) {
-            if (panelHandler.getGenreListe().get(i).getBezeichnung().equals(text)) {
-                genreid = (int) panelHandler.getGenreListe().get(i).getId();
+        List<Genre> list = panelHandler.getGenreListe();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getBezeichnung().equals(text)) {
+                genreid = (int) list.get(i).getId();
             }
         }
         for (int i = 0; i < medienListe.size(); i++) {
@@ -194,21 +211,23 @@ public class SuchePanel extends ElternPanel {
     private javax.swing.JTextField sucheField;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Sucht einen Titel in der Tabelle.
+     *
+     * @param text Zu suchender Titel
+     */
     void setSearchTitel(String text) {
         medienListe = panelHandler.returnMedien();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-
         for (int i = model.getRowCount() - 1; i > -1; i--) {
             model.removeRow(i);
         }
-
-        if (text.equals("") || text.equals("Suche") || text.equals("Titelsuchen...") || text.equals("Titelsuche...")) {
+        if (defaultText(text)) {
             for (int i = 0; i < medienListe.size(); i++) {
                 model.addRow(addObject(i));
             }
             return;
         }
-
         for (int i = 0; i < medienListe.size(); i++) {
             if (medienListe.get(i).getName().equals(text)) {
                 model.addRow(addObject(i));
@@ -216,6 +235,25 @@ public class SuchePanel extends ElternPanel {
         }
     }
 
+    /**
+     * Prüft nach einem Default Text.
+     *
+     * @param text Text, welcher geprüft wird
+     * @return Default Text
+     */
+    private boolean defaultText(String text) {
+        boolean empty = text.equals("");
+        boolean standard1 = text.equals("Suche");
+        boolean standard2 = text.equals("Titelsuchen...");
+        boolean standard3 = text.equals("Titelsuche...");
+        boolean standard4 = text.equals("タイトル...");
+        boolean standard5 = text.equals("Search...");
+        return empty || standard1 || standard2 || standard3 || standard4 || standard5;
+    }
+
+    /**
+     * Füllt eine Tabelle mit Daten.
+     */
     public void fillTable() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         for (int i = model.getRowCount() - 1; i > -1; i--) {
@@ -240,33 +278,40 @@ public class SuchePanel extends ElternPanel {
         return selected[0];
     }
 
-    private void setComboboxKategorie(JComboBox combobox, List<Kategorie> list) {
-        String[] tmp = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            tmp[i] = list.get(i).getBezeichnung();
-        }
-        combobox.setModel(new DefaultComboBoxModel(tmp));
-    }
-
-    private void setComboboxGenre(JComboBox combobox, List<Genre> list) {
-        String[] tmp = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            tmp[i] = list.get(i).getBezeichnung();
-        }
-        combobox.setModel(new DefaultComboBoxModel(tmp));
-    }
-
+    /**
+     * Fügt Objekte der Kategorie und dem Genre hinzu.
+     *
+     * @param i Indices
+     * @return Objekt mit den Informationen
+     */
     private Object[] addObject(int i) {
         String kategorie = panelHandler.getKatBezeichnung(medienListe.get(i).getKategorienId());
         String genre = panelHandler.getGenBezeichnung(medienListe.get(i).getGenreId());
         return new Object[]{medienListe.get(i).getName(), kategorie, genre, medienListe.get(i).getIsbn(), panelHandler.getVerfuegbare((int) medienListe.get(i).getId())};
     }
 
+    /**
+     * Updatet die Informationen in dem aktuellen Panel.
+     */
     @Override
     public void update() {
+        Logger.info(this, "update");
         medienListe = panelHandler.getMedienliste();
         fillTable();
         setComboboxKategorie(kategorieComboBox, panelHandler.getKategorieListe());
         setComboboxGenre(genreComboBox, panelHandler.getGenreListe());
+    }
+
+    /**
+     * Setzt die Sprachkonfiguration anhand der Properties um.
+     *
+     * @param props Properties Datei
+     */
+    @Override
+    public void updateLanguage(Properties props) {
+        sucheField.setText((String) props.get(PropertyName.SUCHEFIELD));
+        kategorieLable.setText((String) props.get(PropertyName.SUCHEPANEL_KATEGORIELABLE));
+        genreLable.setText((String) props.get(PropertyName.SUCHEPANEL_GENRELABLE));
+        selectButton.setText((String) props.get(PropertyName.SUCHEPANEL_SELECTBUTTON));
     }
 }
