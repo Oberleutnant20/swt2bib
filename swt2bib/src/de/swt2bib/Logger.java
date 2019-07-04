@@ -29,9 +29,7 @@ public class Logger {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         Date now = new Date();
         String strDate = sdfDate.format(now);
-
         f = new File(strDate + ".log");
-
         if (f.exists()) {
             f.delete();
         }

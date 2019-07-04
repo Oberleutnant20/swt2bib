@@ -112,6 +112,7 @@ public class Controller {
 
     /**
      * prüft ob der aktuelle User ein Mitarbeiter ist
+     *
      * @return true: ist Mitarbeiter, false: ist kein Mitarbeiter
      */
     public boolean isMitarbeiter() {
@@ -124,6 +125,7 @@ public class Controller {
 
     /**
      * Fügt einen Historyeintrag der Liste hinzu
+     *
      * @param history Histroy DTO
      */
     public void addHistory(History history) {
@@ -133,6 +135,7 @@ public class Controller {
 
     /**
      * Fügt eine Ausleihe der Liste hinzu
+     *
      * @param ausleihe Ausleihe DTO
      */
     public void addAusleihe(Ausleihe ausleihe) {
@@ -213,6 +216,7 @@ public class Controller {
 
     /**
      * Reicht den geänderten Account zum speichern in die Verwaltung weiter.
+     *
      * @param a Angabe Account
      */
     public void saveAccountChange(Account a) {
@@ -221,6 +225,7 @@ public class Controller {
 
     /**
      * Speichert verändertes Medium.
+     *
      * @param m Angabe Medium
      */
     public void saveMediumChange(Medien m) {
@@ -236,6 +241,7 @@ public class Controller {
 
     /**
      * reicht zu löschende Ausleihe an Verwaltung weiter.
+     *
      * @param a Angabe Ausleihe
      */
     public void deleteAusleihe(Ausleihe a) {
@@ -245,6 +251,7 @@ public class Controller {
 
     /**
      * reicht zu speichernden Account weiter.
+     *
      * @param account Angabe Account
      */
     public void saveAccount(Account account) {
@@ -254,6 +261,7 @@ public class Controller {
 
     /**
      * reicht zu löschenden Historyeintrag weiter.
+     *
      * @param h Angabe History
      */
     public void deleteHistory(History h) {
@@ -280,6 +288,7 @@ public class Controller {
 
     /**
      * Startet die Methoden zum speichern der Einträge in den Verwaltungen.
+     *
      * @throws IOException IO Fehler
      * @throws ConnectionError Datenbankverbinungsfehler
      */
